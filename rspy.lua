@@ -12245,6 +12245,7 @@ function p:AddDefaultTitleButtons()
         }
     })
     
+    self.CloseButton = {}
     self.Toggle = {
         Icon = Instance.new("ImageLabel")
     }
