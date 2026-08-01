@@ -529,7 +529,7 @@ function Ui:ConsoleTab(InfoSelector)
 
 	
 	Console = Tab:Console({
-		Text = `
+		Text = "[] " .. Info.Name .. " " .. Info.Version,
 		ReadOnly = true,
 		Border = false,
 		Fill = true,

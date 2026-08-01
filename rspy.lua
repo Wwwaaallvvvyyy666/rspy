@@ -2182,7 +2182,7 @@ function Ui:ConsoleTab(InfoSelector)
 
 	
 	Console = Tab:Console({
-		Text = `
+		Text = "[] " .. Info.Name .. " " .. Info.Version,
 		ReadOnly = true,
 		Border = false,
 		Fill = true,
@@ -13111,7 +13111,6 @@ f={Variables=e.Variables.new(),Formatter=e.Formatter.new(),Parser=e.Parser.new()
 }if d then c(f,d)end for g,h in next,f do local i=false repeat if typeof(h)~=
 'table'then i=true break end if h.new then c(h,f)end i=true until true if not i
 then break end end return f end return b
-
 ]==]
 }
 
