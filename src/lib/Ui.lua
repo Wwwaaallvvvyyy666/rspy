@@ -218,6 +218,9 @@ end
 
 function Ui:LoadReGui()
 	local ThemeConfig = Config and Config.ThemeConfig or {BaseTheme = "ImGui", TextSize = 12}
+	if not FontSuccess then
+		ThemeConfig.BaseTheme = "DarkTheme"
+	end
 	ThemeConfig.TextFont = TextFont
 
 	-- InsertService:LoadLocalAsset can yield forever in executor environments.
@@ -281,12 +284,6 @@ function Ui:CreateWindow(WindowConfig)
 	--// Create Window
 	local Window = ReGui:Window(Config)
 
-	--// Switch to DarkTheme instead of the ImGui theme if the font cannot be loaded
-	if not FontSuccess then 
-		Window:SetTheme("DarkTheme")
-	end
-	
-	--// Create Window
 	return Window
 end
 
