@@ -69,7 +69,7 @@ type Log = {
 local SetClipboard = setclipboard or toclipboard or set_clipboard
 
 --// Libraries
-local DefaultReGuiUrl = "https://raw.githubusercontent.com/nevskiydeveloper/ReGui/main/ReGui.lua"
+local DefaultReGuiUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/Gui/gui.lua"
 local ReGui
 
 local Info

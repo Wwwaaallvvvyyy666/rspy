@@ -8,10 +8,10 @@ local Configuration = {
 	UseWorkspace = false,
 	NoActors = false,
 	FolderName = Info.Name,
-	RepoUrl = "https://raw.githubusercontent.com/nevskiydeveloper/Sigma-Spy-V2/main",
-	ReGuiUrl = "https://raw.githubusercontent.com/nevskiydeveloper/ReGui/main/ReGui.lua",
+	RepoUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main",
+	ReGuiUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/Gui/gui.lua",
 	ReGuiPrefabsId = 122589944740561,
-	ParserUrl = "https://raw.githubusercontent.com/nevskiydeveloper/Roblox-Parser/main/dist/Main.luau"
+	ParserUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/parser/parser.lua"
 }
 
 -- print(`[{Info.Name}] {Info.Version} - Loaded`)

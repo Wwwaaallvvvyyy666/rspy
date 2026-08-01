@@ -140,8 +140,8 @@ Main({ RepoUrl = Url })
 
 Both are written by depso and are loaded at runtime. The upstream repositories moved, so the build points at forks kept in sync here:
 
-- ReGui — [fork used by this build](https://github.com/nevskiydeveloper/ReGui), [upstream (depso)](https://github.com/depthso/Dear-ReGui/tree/main)
-- Roblox-Parser — [fork used by this build](https://github.com/nevskiydeveloper/Roblox-Parser), [upstream (depso)](https://github.com/depthso/Roblox-parser)
+- ReGui — [bundled version used by this build](https://github.com/Wwwaaallvvvyyy666/remotespy/blob/main/Gui/gui.lua), [upstream (depso)](https://github.com/depthso/Dear-ReGui/tree/main)
+- Roblox-Parser — [bundled version used by this build](https://github.com/Wwwaaallvvvyyy666/remotespy/blob/main/parser/parser.lua), [upstream (depso)](https://github.com/depthso/Roblox-parser)
 
 Override them at load time with the `ReGuiUrl`, `ReGuiPrefabsId` and `ParserUrl` keys.
 

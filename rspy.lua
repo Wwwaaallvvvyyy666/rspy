@@ -14,7 +14,7 @@
 	@description SigmaSpy V2 - v26.07.29
 	@author @nevskiydev (telegram), @vladislavvc (telegram)
 	@base_author @depso (depthso), creator of Sigma Spy
-	@repo https://github.com/nevskiydeveloper/Sigma-Spy-V2
+	@repo https://github.com/Wwwaaallvvvyyy666/remotespy
 	@license MIT
 
 	[13.07.2026 20:44] nevskiy.dev: I finally managed to do it.
@@ -38,7 +38,7 @@ return {
 	Version = "v26.07.29",
 	Author = "@nevskiydev (telegram), @vladislavvc (telegram)",
 	AuthorFull = "@depso (depthso)",
-	Repo = "https://github.com/nevskiydeveloper/Sigma-Spy-V2",
+	Repo = "https://github.com/Wwwaaallvvvyyy666/remotespy",
 }
 
 end)()
@@ -48,10 +48,10 @@ local Configuration = {
 	UseWorkspace = false,
 	NoActors = false,
 	FolderName = Info.Name,
-	RepoUrl = "https://raw.githubusercontent.com/nevskiydeveloper/Sigma-Spy-V2/main",
-	ReGuiUrl = "https://raw.githubusercontent.com/nevskiydeveloper/ReGui/main/ReGui.lua",
+	RepoUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main",
+	ReGuiUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/Gui/gui.lua",
 	ReGuiPrefabsId = 122589944740561,
-	ParserUrl = "https://raw.githubusercontent.com/nevskiydeveloper/Roblox-Parser/main/dist/Main.luau"
+	ParserUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/parser/parser.lua"
 }
 
 -- print(`[{Info.Name}] {Info.Version} - Loaded`)
@@ -496,7 +496,7 @@ return {
 	Version = "v26.07.29",
 	Author = "@nevskiydev (telegram), @vladislavvc (telegram)",
 	AuthorFull = "@depso (depthso)",
-	Repo = "https://github.com/nevskiydeveloper/Sigma-Spy-V2",
+	Repo = "https://github.com/Wwwaaallvvvyyy666/remotespy",
 }
 
 ]==],
@@ -1753,7 +1753,7 @@ type Log = {
 local SetClipboard = setclipboard or toclipboard or set_clipboard
 
 --// Libraries
-local DefaultReGuiUrl = "https://raw.githubusercontent.com/nevskiydeveloper/ReGui/main/ReGui.lua"
+local DefaultReGuiUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/Gui/gui.lua"
 local ReGui
 
 local Info
@@ -8264,7 +8264,7 @@ local aa, ab, ad, ae, af = {
     Version = '1.4.7',
     Author = 'Depso',
     License = 'MIT',
-    Repository = 'https://github.com/depthso/Dear-ReGui/',
+    Repository = 'https://github.com/Wwwaaallvvvyyy666/remotespy',
     Debug = false,
     PrefabsId = 71968920594655,
     DefaultTitle = 'ReGui',
@@ -13661,8 +13661,8 @@ local b, c = {
     Version = '1.0.8',
     Author = 'Jsssiee',
     License = 'GNU-GPLv3',
-    Repository = 'https://github.com/Jsssiee/Roblox-parser',
-    ImportUrl = [[https://raw.githubusercontent.com/Jsssiee/Roblox-parser/refs/heads/main]],
+    Repository = 'https://github.com/Wwwaaallvvvyyy666/remotespy',
+    ImportUrl = [[https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/parser/parser.lua]],
     Modules = {
         Formatter = a.load'a',
         Parser = a.load'b',
