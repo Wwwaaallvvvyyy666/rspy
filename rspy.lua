@@ -1700,8 +1700,8 @@ local Ui = {
         December = "🎄 %s 🎁"
     },
 	Scales = {
-		["Mobile"] = UDim2.fromOffset(480, 280),
-		["Desktop"] = UDim2.fromOffset(600, 400),
+		["Mobile"] = UDim2.fromOffset(350, 220),
+		["Desktop"] = UDim2.fromOffset(450, 300),
 	},
     BaseConfig = {
         Theme = "SigmaSpy",
@@ -13782,16 +13782,16 @@ local ActorCode = Files:MakeActorScript(Scripts, ChannelId)
 Hook:LoadHooks(ActorCode, ChannelId)
 
 local EnablePatches = Ui:AskUser({
-	Title = "Enable function patches?",
+	Title = "Aktifkan patch fungsi?",
 	Content = {
-		"On some executors, function patches can prevent common detections that executor has",
-		"By enabling this, it MAY trigger hook detections in some games, this is why you are asked.",
-		"If it doesn't work, rejoin and press 'No'",
+		"Pada beberapa executor, patch fungsi dapat mencegah deteksi umum yang dimiliki executor tersebut.",
+		"Dengan mengaktifkan ini, MUNGKIN akan memicu deteksi hook di beberapa game, karena itu Anda diminta untuk memilih.",
+		"Jika tidak berfungsi, masuk kembali ke game lalu tekan 'Tidak'.",
 		"",
-		"(This does not affect game functionality)"
+		"(Ini tidak memengaruhi fungsionalitas game)"
 	},
-	Options = {"Yes", "No"}
-}) == "Yes"
+	Options = {"Ya", "Tidak"}
+}) == "Ya"
 
 --// Begin hooks
 Event:Fire("BeginHooks", {

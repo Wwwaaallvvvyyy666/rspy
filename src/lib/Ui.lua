@@ -16,8 +16,8 @@ local Ui = {
         December = "🎄 %s 🎁"
     },
 	Scales = {
-		["Mobile"] = UDim2.fromOffset(480, 280),
-		["Desktop"] = UDim2.fromOffset(600, 400),
+		["Mobile"] = UDim2.fromOffset(350, 220),
+		["Desktop"] = UDim2.fromOffset(450, 300),
 	},
     BaseConfig = {
         Theme = "SigmaSpy",
