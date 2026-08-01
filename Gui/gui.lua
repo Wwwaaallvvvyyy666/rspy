@@ -1073,7 +1073,8 @@ TagElements{[m]=s}end if p then p:LoadStylesIntoElement(g)end if not r then self
 )local m=self.Initialised and g.Error if not m then self:Error('Class:',i)return
 end g:Error{Parent=h,Text=i}end function aa:WrapGeneration(g,h)local i,m,n=self.
 _ErrorCache,h.Base,h.IgnoreDefaults return function(o,p,...)p=p or{}self:
-CheckConfig(p,m)local q=p.CloneTable if q then p=table.clone(p)end local r,s,t=(typeof(o)=='table' and o.RawObject or nil),o.Elements,o.OnChildChange self:CheckConfig(p,{Parent=r,Name=p.
+CheckConfig(p,m)local q=p.CloneTable if q then p=table.clone(p)end local r,s,t=o
+.RawObject,o.Elements,o.OnChildChange self:CheckConfig(p,{Parent=r,Name=p.
 ColorTag},nil,n)if o==self then o=self.Elements end local u,v,x=pcall(g,o,p,...)
 if u==false then if r then if i[r]then return end i[r]=v end self:VisualError(o,
 r,v)self:Error('Class:',v)self:Error(debug.traceback())end if x==nil then x=v
@@ -1627,7 +1628,8 @@ Collapse,q.Close,self.TitleBarCanvas if not t then t=self:MakeTitleBarCanvas()
 end aa:CheckConfig(self,{Toggle=t:RadioButton{Icon=r.Image,IconPadding=r.
 IconPadding,LayoutOrder=1,Ratio=1,Size=UDim2.new(0,0),Callback=function()self:
 ToggleCollapsed()end},CloseButton=t:RadioButton{Icon=s.Image,IconPadding=s.
-IconPadding,LayoutOrder=3,Ratio=1,Size=UDim2.new(0,0),Callback=function()end},RealClose=t:Button{Text="X",LayoutOrder=4,Size=UDim2.new(0,20),Callback=function()self:Close()end},TitleLabel=t:Label{ColorTag='Title',LayoutOrder=2,Size=
+IconPadding,LayoutOrder=3,Ratio=1,Size=UDim2.new(0,0),Callback=function()self:
+SetVisible(false)end},TitleLabel=t:Label{ColorTag='Title',LayoutOrder=2,Size=
 UDim2.new(1,0),Active=false,Fill=true,ClipsDescendants=true,AutomaticSize=Enum.
 AutomaticSize.XY}})self:TagElements{[self.TitleLabel]='WindowTitle'}end function
 p:Close()local q=self.CloseCallback if q then local r=q(self)if r==false then
