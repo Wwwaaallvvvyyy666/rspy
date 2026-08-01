@@ -1,4 +1,3 @@
---// Product identity
 local Info = (function()
 	--INSERT: @lib/Info.lua
 end)()

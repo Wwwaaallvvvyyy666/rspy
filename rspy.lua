@@ -10,7 +10,6 @@
 
 
 
---// Product identity
 local Info = (function()
 	
 return {
@@ -5565,6 +5564,7 @@ MakeCanvas{WindowClass=self,Element=q}self.TitleBarCanvas=r return r end
 function p:AddDefaultTitleButtons()local t=self.TitleBarCanvas if not t then t=self:MakeTitleBarCanvas()end
 local function CC(c,txt,o,tc)local b=Instance.new("TextButton")b.Text=txt b.TextColor3=tc or Color3.new(0,0,0)b.Font=Enum.Font.Code b.TextSize=12 b.AutoButtonColor=false b.Size=UDim2.new(0,12,0,12)b.BackgroundColor3=c b.LayoutOrder=o local cr=Instance.new("UICorner")cr.CornerRadius=UDim.new(1,0)cr.Parent=b return b end
 local mc=Instance.new("Frame")mc.BackgroundTransparency=1 mc.AutomaticSize=Enum.AutomaticSize.XY mc.LayoutOrder=1 mc.Parent=t.RawObject
+local di=Instance.new("ImageLabel")di.Name="Icon"di.Visible=false di.Parent=mc
 local mp=Instance.new("UIPadding")mp.PaddingLeft=UDim.new(0,10)mp.PaddingRight=UDim.new(0,10)mp.PaddingTop=UDim.new(0,6)mp.Parent=mc
 local ml=Instance.new("UIListLayout")ml.FillDirection=Enum.FillDirection.Horizontal ml.VerticalAlignment=Enum.VerticalAlignment.Center ml.Padding=UDim.new(0,6)ml.Parent=mc
 local b1=CC(Color3.fromRGB(255,95,86),"-",1)b1.Activated:Connect(function()pcall(function()self:ToggleCollapsed()end)end)b1.Parent=mc
