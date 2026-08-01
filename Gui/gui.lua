@@ -8312,12 +8312,28 @@ function p:AddDefaultTitleButtons()
         }
     })
     
-    local toggleIcon = self.Toggle and ((typeof(self.Toggle) == "Instance" and self.Toggle:FindFirstChild("Icon")) or (self.Toggle.RawObject and self.Toggle.RawObject:FindFirstChild("Icon")))
+    local toggleIcon = nil
+    if self.Toggle then
+        if typeof(self.Toggle) == "Instance" then
+            toggleIcon = self.Toggle:FindFirstChild("Icon")
+        elseif type(self.Toggle) == "table" and self.Toggle.RawObject then
+            toggleIcon = self.Toggle.RawObject:FindFirstChild("Icon")
+        end
+    end
+
     if toggleIcon then
         toggleIcon.Rotation = 90
     end
     
-    local closeBtnObj = self.CloseButton and (self.CloseButton.RawObject or (typeof(self.CloseButton) == "Instance" and self.CloseButton))
+    local closeBtnObj = nil
+    if self.CloseButton then
+        if typeof(self.CloseButton) == "Instance" then
+            closeBtnObj = self.CloseButton
+        elseif type(self.CloseButton) == "table" and self.CloseButton.RawObject then
+            closeBtnObj = self.CloseButton.RawObject
+        end
+    end
+
     if closeBtnObj then
         closeBtnObj:GetPropertyChangedSignal("Visible"):Connect(function()
             MacContainer.Visible = closeBtnObj.Visible
