@@ -4261,13 +4261,13 @@ new(1, 0)
 end
 local aa, ab, ad, ae, af = {
     Version = '1.4.7',
-    Author = 'Depso',
+    Author = 'Walvy',
     License = 'MIT',
     Repository = 'https://github.com/Wwwaaallvvvyyy666/remotespy',
     Debug = false,
     PrefabsId = 71968920594655,
-    DefaultTitle = 'ReGui',
-    ContainerName = 'ReGui',
+    DefaultTitle = 'ImGui',
+    ContainerName = 'ImGui',
     DoubleClickThreshold = 0.3,
     TooltipOffset = 15,
     IniToSave = {
