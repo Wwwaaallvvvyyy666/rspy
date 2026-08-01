@@ -8237,8 +8237,10 @@ function p:AddDefaultTitleButtons()
     
     local MacContainer = Instance.new("Frame")
     MacContainer.BackgroundTransparency = 1
-    MacContainer.Size = UDim2.new(0, 0, 1, 0)
-    MacContainer.AutomaticSize = Enum.AutomaticSize.X
+    MacContainer.Size = UDim2.new(0, 0, 0, 0)
+    MacContainer.Position = UDim2.new(0, 0, 0.5, 0)
+    MacContainer.AnchorPoint = Vector2.new(0, 0.5)
+    MacContainer.AutomaticSize = Enum.AutomaticSize.XY
     MacContainer.LayoutOrder = 1
     MacContainer.Parent = t.RawObject
 
