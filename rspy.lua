@@ -54,10 +54,10 @@ local Configuration = {
 	ParserUrl = "https://raw.githubusercontent.com/nevskiydeveloper/Roblox-Parser/main/dist/Main.luau"
 }
 
-print(`[{Info.Name}] {Info.Version} - Loaded`)
+-- print(`[{Info.Name}] {Info.Version} - Loaded`)
 
 local function StartupLog(Message: string)
-	print(`[{Info.Name}] [startup] {Message}`)
+	-- print(`[{Info.Name}] [startup] {Message}`)
 end
 
 --// Load overwrites
@@ -101,7 +101,7 @@ local HttpService: HttpService
 local Info
 
 local function StartupLog(Message: string)
-	print(`[{Info.Name}] [startup] {Message}`)
+	-- print(`[{Info.Name}] [startup] {Message}`)
 end
 
 function Files:Init(Data)
@@ -1759,7 +1759,7 @@ local ReGui
 local Info
 
 local function StartupLog(Message: string)
-	print(`[{Info.Name}] [startup] {Message}`)
+	-- print(`[{Info.Name}] [startup] {Message}`)
 end
 
 local function RunWithTimeout(Timeout: number, Callback: () -> any): (boolean, any)

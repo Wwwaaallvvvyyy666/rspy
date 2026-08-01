@@ -19,7 +19,7 @@ local HttpService: HttpService
 local Info
 
 local function StartupLog(Message: string)
-	print(`[{Info.Name}] [startup] {Message}`)
+	-- print(`[{Info.Name}] [startup] {Message}`)
 end
 
 function Files:Init(Data)

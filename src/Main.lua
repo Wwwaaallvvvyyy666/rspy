@@ -14,10 +14,10 @@ local Configuration = {
 	ParserUrl = "https://raw.githubusercontent.com/nevskiydeveloper/Roblox-Parser/main/dist/Main.luau"
 }
 
-print(`[{Info.Name}] {Info.Version} - Loaded`)
+-- print(`[{Info.Name}] {Info.Version} - Loaded`)
 
 local function StartupLog(Message: string)
-	print(`[{Info.Name}] [startup] {Message}`)
+	-- print(`[{Info.Name}] [startup] {Message}`)
 end
 
 --// Load overwrites

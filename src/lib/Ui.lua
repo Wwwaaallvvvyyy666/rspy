@@ -75,7 +75,7 @@ local ReGui
 local Info
 
 local function StartupLog(Message: string)
-	print(`[{Info.Name}] [startup] {Message}`)
+	-- print(`[{Info.Name}] [startup] {Message}`)
 end
 
 local function RunWithTimeout(Timeout: number, Callback: () -> any): (boolean, any)
