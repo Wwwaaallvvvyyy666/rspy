@@ -151,12 +151,7 @@ function Ui:Init(Data)
 	Files = Modules.Files
 	Info = Modules.Info
 
-	self.DefaultEditorContent = `--[[
-	{Info.Name} {Info.Version}
-	Original Remote Spy by {Info.Author}
-
-	{Info.Repo}
-]]`
+	self.DefaultEditorContent = `--[[\n\t{Info.Name} {Info.Version}\n\tOriginal Remote Spy by {Info.Author}\n\n\t{Info.Repo}\n]]`
 
 	ReGui = Modules.ReGui or ReGui or LoadRemoteModule("ReGui", Configuration.ReGuiUrl or DefaultReGuiUrl)
 	ReGui.PrefabsId = Configuration.ReGuiPrefabsId or ReGui.PrefabsId
