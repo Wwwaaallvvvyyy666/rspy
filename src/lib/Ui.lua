@@ -327,7 +327,6 @@ function Ui:CreateMainWindow()
 
 	--// Check if the font was successfully downloaded
 	self:FontWasSuccessful()
-	self:AuraCounterService()
 
 	--// UiVisible flag callback
 	Flags:SetFlagCallback("UiVisible", function(self, Visible)
@@ -456,31 +455,6 @@ function Ui:CreateElements(Parent, Options)
 		--// Create column and element
 		Checkbox = Container[Class](Container, Data)
 	end
-end
-
---// Boiiii what did you say about Remote Spy 💀💀
-function Ui:DisplayAura()
-    local Window = self.Window
-    local Rand = self.RandomSeed
-
-	--// Aura (boiiiii)
-    local AURA = Rand:NextInteger(1, 9999999)
-    local AURADELAY = Rand:NextInteger(1, 5)
-
-	--// Title
-	local Title = `{Info.Name} | AURA: {AURA}`
-	local Seasonal = self:TurnSeasonal(Title)
-    Window:SetTitle(Seasonal)
-
-    wait(AURADELAY)
-end
-
-function Ui:AuraCounterService()
-    task.spawn(function()
-        while true do
-            self:DisplayAura()
-        end
-    end)
 end
 
 function Ui:CreateWindowContent(Window)
@@ -883,8 +857,8 @@ function Ui:MakeTableHeaders(Table, Rows: table)
 end
 
 function Ui:Decompile(Editor: table, Script: Script)
-	local Header = "--BOOIIII THIS IS SO TUFF FLIPPY SKIBIDI AURA (REMOTE SPY)"
-	Editor:SetText("--Decompiling... +9999999 AURA (mango phonk)")
+	local Header = "--Decompiling..."
+	Editor:SetText("--Decompiling...")
 
 	--// Decompile script
 	local Decompiled, IsError = Process:Decompile(Script)
@@ -1005,7 +979,7 @@ function Ui:SetFocusedRemote(Data)
 
 		--// Check if script exists
 		if not Script and not NoMissingCheck then 
-			Ui:ShowModal({"The Script has been destroyed by the game (-9999999 AURA)"})
+			Ui:ShowModal({"The Script has been destroyed by the game"})
 			return
 		end
 
@@ -1044,7 +1018,7 @@ function Ui:SetFocusedRemote(Data)
 		--// getscriptbytecode
     	local Success, Bytecode = pcall(getscriptbytecode, Script)
 		if not Success then
-			Ui:ShowModal({"Failed to get Scripte bytecode (-9999999 AURA)"})
+			Ui:ShowModal({"Failed to get Script bytecode"})
 			return
 		end
 
@@ -1073,11 +1047,11 @@ function Ui:SetFocusedRemote(Data)
 
 		--// Error messages
 		if not IsRemoteFunction then
-			Ui:ShowModal({"The Remote is not a Remote Function (-9999999 AURA)"})
+			Ui:ShowModal({"The Remote is not a Remote Function"})
 			return
 		end
 		if not ReturnValues then
-			Ui:ShowModal({"No return values (-9999999 AURA)"})
+			Ui:ShowModal({"No return values"})
 			return
 		end
 

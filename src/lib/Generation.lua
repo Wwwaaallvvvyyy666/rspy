@@ -86,7 +86,7 @@ function Generation:Init(Data: table)
 
 	--// Dump naming, derived from the product identity
 	self.DumpBaseName = `{Info.Name:gsub(" ", "")}-Dump %s.lua`
-	self.Header = `-- Generated with {Info.Name} {Info.Version}, original 666's spy by {Info.Author}\n`
+	self.Header = `-- Generated with {Info.Name} {Info.Version}\n`
 end
 
 function Generation:MakePrintable(String: string): string

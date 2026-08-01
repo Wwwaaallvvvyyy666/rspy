@@ -9,14 +9,10 @@ return {
     ForceKonstantDecompiler = false,
 
     VariableNames = {
-        "RIFT_IS_DETECTED%.d", 
-        "FullyXYZ_IS_UD%.d",
-        "Skibidi%.d", 
-        "AURA%.d", 
-        "Sigma%.d", 
-        "Mango%.d", 
-        "Phonk%.d", 
-        "Argument%.d",
+        "arg%d", 
+        "var%d",
+        "val%d", 
+        "p%d"
     },
     SyntaxColors = {
         Text = Color3.fromRGB(204, 204, 204),
