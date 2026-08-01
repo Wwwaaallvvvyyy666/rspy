@@ -45,6 +45,33 @@ end
 --// Load overwrites
 local Parameters = {...}
 local Overwrites = Parameters[1]
+
+--// Error Handler
+local ScriptContext = game:GetService("ScriptContext")
+ScriptContext.Error:Connect(function(Message, StackTrace, Script)
+	-- Cek apakah error berasal dari executor (Script biasanya nil atau merujuk ke LocalScript) atau script kita
+	local isExecutorScript = (Script == nil) or (typeof(Script) == "Instance" and Script.ClassName == "LocalScript")
+	local traceStr = tostring(StackTrace)
+	local msgStr = tostring(Message)
+	
+	if isExecutorScript or string.find(traceStr, "ReGui") or string.find(msgStr, "ReGui") then
+		if writefile and makefolder and isfolder then
+			pcall(function()
+				if not isfolder("RemoteSpy_Errors") then
+					makefolder("RemoteSpy_Errors")
+				end
+				local timeStr = os.date("%Y%m%d_%H%M%S")
+				local fileName = "RemoteSpy_Errors/" .. timeStr .. "_error.txt"
+				local errorText = "Time: " .. tostring(os.date()) .. "\n"
+					.. "Message: " .. msgStr .. "\n"
+					.. "Script: " .. tostring(Script) .. "\n"
+					.. "StackTrace:\n" .. traceStr
+				
+				writefile(fileName, errorText)
+			end)
+		end
+	end
+end)
 if typeof(Overwrites) == "table" then
 	for Key, Value in Overwrites do
 		Configuration[Key] = Value
