@@ -12,10 +12,17 @@
 
 local RepoUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/rspy/main"
 local function FetchModule(Path)
-	local Success, Result = pcall(function() return game:HttpGet(RepoUrl .. "/" .. Path) end)
-	if not Success then return nil end
-	local Func = loadstring(Result)
-	if not Func then return nil end
+	local Url = RepoUrl .. "/" .. Path .. "?nocache=" .. tostring(os.time()) .. tostring(math.random(1000, 9999))
+	local Success, Result = pcall(function() return game:HttpGet(Url) end)
+	if not Success then 
+		warn("[RemoteSpy] HTTP Get Failed for " .. Path .. " - " .. tostring(Result))
+		return nil 
+	end
+	local Func, Err = loadstring(Result)
+	if not Func then 
+		warn("[RemoteSpy] loadstring Failed for " .. Path .. " - " .. tostring(Err))
+		return nil 
+	end
 	return Func()
 end
 
