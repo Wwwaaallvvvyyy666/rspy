@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_OUTPUT = ROOT / "SigmaSpyV2.luau"
+DEFAULT_OUTPUT = ROOT / "rspy.lua"
 
 MAIN = "src/Main.lua"
 FRAME = "build/frame.lua"
