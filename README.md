@@ -15,8 +15,8 @@ A complete Remote Spy with an incredible parser that captures incoming and outgo
 ## Loadstring
 
 ```lua
---// SigmaSpy V2
-loadstring(game:HttpGet("https://raw.githubusercontent.com/nevskiydeveloper/Sigma-Spy-V2/main/SigmaSpyV2.luau"), "SigmaSpy V2")()
+--// SigmaSpy V2 | Modified
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/Main.lua"))()
 ```
 
 The build is self-contained: the config template, the return-spoofs template and the ImGui font are embedded in the file itself, so nothing is downloaded from this repository at runtime. Only the two external libraries (ReGui and Roblox-Parser) are still fetched over HTTP.

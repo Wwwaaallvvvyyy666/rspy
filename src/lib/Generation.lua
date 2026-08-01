@@ -82,14 +82,11 @@ function Generation:Init(Data: table)
 	Hook = Modules.Hook
 	Flags = Modules.Flags
 	Info = Modules.Info
+	ParserModule = Modules.Parser
 
 	--// Dump naming, derived from the product identity
 	self.DumpBaseName = `{Info.Name:gsub(" ", "")}-Dump %s.lua`
-	self.Header = `-- Generated with {Info.Name} {Info.Version}, original Sigma Spy by {Info.Author}\n`
-
-	--// Import parser
-	local ParserUrl = Configuration.ParserUrl
-	self:LoadParser(ParserUrl)
+	self.Header = `-- Generated with {Info.Name} {Info.Version}, original 666's spy by {Info.Author}\n`
 end
 
 function Generation:MakePrintable(String: string): string
@@ -113,30 +110,7 @@ function Generation:WriteDump(Content: string): string
 	return FilePath
 end
 
-function Generation:LoadParser(ModuleUrl: string)
-	local function StartupLog(Message: string)
-		print(`[{Info.Name}] [startup] {Message}`)
-	end
 
-	StartupLog("downloading Parser")
-	local FetchSuccess, Source = pcall(function()
-		return game:HttpGet(ModuleUrl)
-	end)
-	assert(FetchSuccess, `Failed to download Parser from {ModuleUrl}: {Source}`)
-	assert(typeof(Source) == "string" and #Source > 0, `Failed to download Parser from {ModuleUrl}: empty response`)
-	StartupLog(`downloaded Parser ({#Source} bytes)`)
-
-	local Closure, CompileError = loadstring(Source, "Parser")
-	assert(Closure, `Failed to compile Parser downloaded from {ModuleUrl}: {CompileError}`)
-	StartupLog("compiled Parser")
-
-	local RunSuccess, Module = pcall(Closure)
-	assert(RunSuccess, `Failed to execute Parser downloaded from {ModuleUrl}: {Module}`)
-	assert(typeof(Module) == "table", `Parser downloaded from {ModuleUrl} returned {typeof(Module)}, expected table`)
-	StartupLog("executed Parser")
-
-	ParserModule = Module
-end
 
 function Generation:MakeValueSwapsTable(): table
 	local Formatter = ParserModule.Modules.Formatter
@@ -206,6 +180,15 @@ end
 
 function Generation:Indent(IndentString: string, Line: string)
 	return `{IndentString}{Line}`
+end
+
+function Generation:CallRemoteArgsOnly(Data, Args): string
+	local Module = self:NewParser()
+	local Parts = {}
+	for _, Arg in ipairs(Args) do
+		table.insert(Parts, self:ParseArgument(Module, Arg))
+	end
+	return table.concat(Parts, ", ")
 end
 
 type CallInfo = {
@@ -455,19 +438,24 @@ function Generation:ConnectionInfo(Remote: Instance, ClassData: table): table?
 end
 
 function Generation:AdvancedInfo(Module, Data: table): string
-	--// Unpack remote data
 	local Function = Data.CallingFunction
 	local ClassData = Data.ClassData
 	local Remote = Data.Remote
 	local Args = Data.Args
-	
-	--// Advanced info table base
+	local CallStack = Data.CallStack or {}
+
+	local StackLines = {}
+	for i, Frame in ipairs(CallStack) do
+		StackLines[i] = `[{i}] {Frame.Source}:{Frame.Line} ({Frame.Name})`
+	end
+
 	local FunctionInfo = {
-		["Caller"] = {
+		["Pemanggil"] = {
 			["SourceScript"] = Data.SourceScript,
 			["CallingScript"] = Data.CallingScript,
 			["CallingFunction"] = Function
 		},
+		["CallStack"] = StackLines,
 		["Remote"] = {
 			["Remote"] = Remote,
 			["RemoteID"] = Data.Id,
@@ -482,13 +470,11 @@ function Generation:AdvancedInfo(Module, Data: table): string
 		["IsActor"] = Data.IsActor,
 	}
 
-	--// Some closures may not be lua
 	if Function and islclosure(Function) then
 		FunctionInfo["UpValues"] = debug.getupvalues(Function)
 		FunctionInfo["Constants"] = debug.getconstants(Function)
 	end
 
-	--// Generate script
 	return self:TableScript(Module, FunctionInfo)
 end
 

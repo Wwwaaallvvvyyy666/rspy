@@ -335,11 +335,9 @@ function Process:FindCallingLClosure(Offset: number)
     while true do
         Offset += 1
 
-        --// Check if the stack level is valid
         local IsValid = debug.info(Offset, "l") ~= -1
         if not IsValid then continue end
 
-        --// Check if the function is valid
         local Function = debug.info(Offset, "f")
         if not Function then return end
         if Getfenv(Function) == SigmaENV then continue end
@@ -348,41 +346,69 @@ function Process:FindCallingLClosure(Offset: number)
     end
 end
 
+function Process:GetFullCallStack(Offset: number): table
+    local Getfenv = Hook:GetOriginalFunc(getfenv)
+    local Stack = {}
+    local Level = (Offset or 6) + 1
+
+    while true do
+        Level += 1
+        local Source = debug.info(Level, "s")
+        if not Source then break end
+
+        local Line = debug.info(Level, "l")
+        if Line == -1 then Level += 1; continue end
+
+        local Func = debug.info(Level, "f")
+        if Func and Getfenv(Func) == SigmaENV then Level += 1; continue end
+
+        local Name = debug.info(Level, "n") or "?"
+        table.insert(Stack, {
+            Source = Source,
+            Line = Line,
+            Name = Name,
+            Func = Func
+        })
+    end
+
+    return Stack
+end
+
 function Process:Decompile(Script: LocalScript | ModuleScript): string
-    local KonstantAPI = "http://api.plusgiant5.com/konstant/decompile"
     local ForceKonstant = Config and Config.ForceKonstantDecompiler or false
 
-    --// Use built-in decompiler if the executor supports it
-    if decompile and not ForceKonstant then 
-        return decompile(Script)
+    if decompile and not ForceKonstant then
+        local Ok, Result = pcall(decompile, Script)
+        if Ok and Result and #Result > 0 then
+            return Result
+        end
     end
 
-    --// getscriptbytecode
-    local Success, Bytecode = pcall(getscriptbytecode, Script)
-    if not Success then
-        local Error = `--Failed to get script bytecode, error:\n`
-        Error ..= `\n--[[\n{Bytecode}\n]]`
-        return Error, true
+    local BytecodeOk, Bytecode = pcall(getscriptbytecode, Script)
+    if not BytecodeOk then
+        return "--[[ Gagal mendapatkan bytecode skrip:\n" .. tostring(Bytecode) .. "\n]]"
     end
-    
-    --// Send POST request to the API
-    local Responce = request({
-        Url = KonstantAPI,
+
+    local HttpFunc = request or syn and syn.request or http_request
+    if not HttpFunc then
+        return "--[[ Decompile gagal: executor tidak mendukung 'request()' untuk API fallback. ]]"
+    end
+
+    local Ok, Response = pcall(HttpFunc, {
+        Url = "http://api.plusgiant5.com/konstant/decompile",
         Body = Bytecode,
         Method = "POST",
-        Headers = {
-            ["Content-Type"] = "text/plain"
-        },
+        Headers = { ["Content-Type"] = "text/plain" }
     })
 
-    --// Error check
-    if Responce.StatusCode ~= 200 then
-        local Error = `--[KONSTANT] Error occured while requesting the API, error:\n`
-        Error ..= `\n--[[\n{Responce.Body}\n]]`
-        return Error, true
+    if not Ok then
+        return "--[[ API decompile tidak dapat dihubungi: " .. tostring(Response) .. " ]]"
+    end
+    if Response.StatusCode ~= 200 then
+        return "--[[ API error " .. tostring(Response.StatusCode) .. ":\n" .. tostring(Response.Body) .. "\n]]"
     end
 
-    return Responce.Body
+    return Response.Body
 end
 
 function Process:GetScriptFromFunc(Func: (...any) -> ...any)
@@ -391,8 +417,8 @@ function Process:GetScriptFromFunc(Func: (...any) -> ...any)
     local Success, ENV = pcall(getfenv, Func)
     if not Success then return end
     
-    --// Blacklist sigma spy
-    if self:IsSigmaSpyENV(ENV) then return end
+    --// Blacklist 666's spy
+    if self:Is666SpyENV(ENV) then return end
 
     return rawget(ENV, "script")
 end
@@ -441,7 +467,7 @@ function Process:FilterConnections(Signal: RBXScriptSignal): table
     return Processed
 end
 
-function Process:IsSigmaSpyENV(Env: table): boolean
+function Process:Is666SpyENV(Env: table): boolean
     return Env == SigmaENV
 end
 
@@ -484,26 +510,43 @@ function Process:PromptDiscordInvite(InviteCode: string)
     })
 end
 
+local TamperCallbacks = {}
+
+function Process:RegisterTamperCallback(Id: string, Callback)
+    TamperCallbacks[Id] = Callback
+end
+
+function Process:UnregisterTamperCallback(Id: string)
+    TamperCallbacks[Id] = nil
+end
+
 local ProcessCallback = newcclosure(function(Data: RemoteData, Remote, ...): table?
-    --// Unpack Data
     local OriginalFunc = Data.OriginalFunc
     local Id = Data.Id
     local Method = Data.Method
 
-    --// Check if the Remote is Blocked
     local RemoteData = Process:GetRemoteData(Id)
     if RemoteData.Blocked then return {} end
 
-    --// Check for a spoof
-    local Spoof = Process:GetRemoteSpoof(Remote, Method, OriginalFunc, ...)
+    local Args = {...}
+
+    if RemoteData.Tamper then
+        local Thread = coroutine.running()
+        local Callback = TamperCallbacks[Id]
+        if Callback then
+            local Approved, NewArgs = Callback(Data, Args)
+            if not Approved then return {} end
+            Args = NewArgs or Args
+        end
+    end
+
+    local Spoof = Process:GetRemoteSpoof(Remote, Method, OriginalFunc, table.unpack(Args))
     if Spoof then return Spoof end
 
-    --// Check if the orignal function was passed
     if not OriginalFunc then return end
 
-    --// Invoke orignal function
     return {
-        OriginalFunc(Remote, ...)
+        OriginalFunc(Remote, table.unpack(Args))
     }
 end)
 
@@ -536,12 +579,14 @@ function Process:ProcessRemote(Data: RemoteData, Remote, ...): table?
         SourceScript = CallingFunction and self:GetScriptFromFunc(CallingFunction) or nil
     end
 
-    --// Add to queue
+    local CallStack = not IsReceive and self:GetFullCallStack(6) or {}
+
     self:Merge(Data, {
         Remote = cloneref(Remote),
 		CallingScript = getcallingscript(),
         CallingFunction = CallingFunction,
         SourceScript = SourceScript,
+        CallStack = CallStack,
         Id = Id,
 		ClassData = ClassData,
         Timestamp = Timestamp,
