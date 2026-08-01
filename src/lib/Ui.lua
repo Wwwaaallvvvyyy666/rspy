@@ -72,6 +72,8 @@ local SetClipboard = setclipboard or toclipboard or set_clipboard
 local DefaultReGuiUrl = "https://raw.githubusercontent.com/nevskiydeveloper/ReGui/main/ReGui.lua"
 local ReGui
 
+local Info
+
 local function StartupLog(Message: string)
 	print(`[{Info.Name}] [startup] {Message}`)
 end
@@ -127,7 +129,6 @@ local Hook
 local Config
 local Communication
 local Files
-local Info
 
 local ActiveData = nil
 local RemotesCount = 0

@@ -64,7 +64,9 @@ local Scripts = {
 	Flags = {"base64", "COMPILE: @lib/Flags.lua"},
 	Ui = {"base64", "COMPILE: @lib/Ui.lua"},
 	Generation = {"base64", "COMPILE: @lib/Generation.lua"},
-	Communication = {"base64", "COMPILE: @lib/Communication.lua"}
+	Communication = {"base64", "COMPILE: @lib/Communication.lua"},
+	ReGui = {"base64", "COMPILE: @lib/ReGui.lua"},
+	Parser = {"base64", "COMPILE: @lib/Parser.lua"}
 }
 
 --// Services

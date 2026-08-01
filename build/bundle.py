@@ -21,7 +21,7 @@ MAIN = "src/Main.lua"
 FRAME = "build/frame.lua"
 INFO_MODULE = "src/lib/Info.lua"
 INLINED = ("Info", "Files")
-LIBRARIES = ("Info", "Process", "Hook", "Flags", "Ui", "Generation", "Communication")
+LIBRARIES = ("Info", "Process", "Hook", "Flags", "Ui", "Generation", "Communication", "ReGui", "Parser")
 
 INSERT_PLACEHOLDER = "--INSERT: @lib/{name}.lua"
 COMPILE_PLACEHOLDER = '{{"base64", "COMPILE: @lib/{name}.lua"}}'
