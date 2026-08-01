@@ -233,7 +233,6 @@ function Files:CreateFont(Name: string, AssetId: string): string?
 		}
 	}
 
-	--// Write Json
 	local Json = HttpService:JSONEncode(Data)
 	writefile(JsonPath, Json)
 

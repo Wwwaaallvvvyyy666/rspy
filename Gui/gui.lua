@@ -8312,13 +8312,18 @@ function p:AddDefaultTitleButtons()
         }
     })
     
-    self.Toggle.Icon.Rotation = 90
+    local toggleIcon = self.Toggle and ((typeof(self.Toggle) == "Instance" and self.Toggle:FindFirstChild("Icon")) or (self.Toggle.RawObject and self.Toggle.RawObject:FindFirstChild("Icon")))
+    if toggleIcon then
+        toggleIcon.Rotation = 90
+    end
     
-    -- Hide MacOS decorations if native close button is hidden (e.g. on Popups)
-    self.CloseButton.RawObject:GetPropertyChangedSignal("Visible"):Connect(function()
-        MacContainer.Visible = self.CloseButton.RawObject.Visible
-    end)
-    MacContainer.Visible = self.CloseButton.RawObject.Visible
+    local closeBtnObj = self.CloseButton and (self.CloseButton.RawObject or (typeof(self.CloseButton) == "Instance" and self.CloseButton))
+    if closeBtnObj then
+        closeBtnObj:GetPropertyChangedSignal("Visible"):Connect(function()
+            MacContainer.Visible = closeBtnObj.Visible
+        end)
+        MacContainer.Visible = closeBtnObj.Visible
+    end
 
     self:TagElements{
         [self.TitleLabel] = 'WindowTitle'

@@ -25,7 +25,6 @@ return {
 
 end)()
 
---// Base Configuration
 local Configuration = {
 	UseWorkspace = false,
 	NoActors = false,
@@ -36,20 +35,17 @@ local Configuration = {
 	ParserUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/parser/parser.lua"
 }
 
--- print(`[{Info.Name}] {Info.Version} - Loaded`)
+
 
 local function StartupLog(Message: string)
-	-- print(`[{Info.Name}] [startup] {Message}`)
+
 end
 
---// Load overwrites
 local Parameters = {...}
 local Overwrites = Parameters[1]
 
---// Error Handler
 local ScriptContext = game:GetService("ScriptContext")
 ScriptContext.Error:Connect(function(Message, StackTrace, Script)
-	-- Cek apakah error berasal dari executor (Script biasanya nil atau merujuk ke LocalScript) atau script kita
 	local isExecutorScript = (Script == nil) or (typeof(Script) == "Instance" and Script.ClassName == "LocalScript")
 	local traceStr = tostring(StackTrace)
 	local msgStr = tostring(Message)
@@ -324,7 +320,6 @@ function Files:CreateFont(Name: string, AssetId: string): string?
 		}
 	}
 
-	--// Write Json
 	local Json = HttpService:JSONEncode(Data)
 	writefile(JsonPath, Json)
 
@@ -1895,8 +1890,7 @@ function Ui:LoadReGui()
 	end
 	ThemeConfig.TextFont = TextFont
 
-	-- InsertService:LoadLocalAsset can yield forever in executor environments.
-	-- Supplying the prefab explicitly prevents ReGui:CheckImportState from using it.
+	
 	if not ReGui.Initialised then
 		local PrefabsId = ReGui.PrefabsId
 		assert(typeof(PrefabsId) == "number" and PrefabsId > 0, "ReGui returned an invalid PrefabsId")
@@ -12301,13 +12295,18 @@ function p:AddDefaultTitleButtons()
         }
     })
     
-    self.Toggle.Icon.Rotation = 90
+    local toggleIcon = self.Toggle and ((typeof(self.Toggle) == "Instance" and self.Toggle:FindFirstChild("Icon")) or (self.Toggle.RawObject and self.Toggle.RawObject:FindFirstChild("Icon")))
+    if toggleIcon then
+        toggleIcon.Rotation = 90
+    end
     
-    -- Hide MacOS decorations if native close button is hidden (e.g. on Popups)
-    self.CloseButton.RawObject:GetPropertyChangedSignal("Visible"):Connect(function()
-        MacContainer.Visible = self.CloseButton.RawObject.Visible
-    end)
-    MacContainer.Visible = self.CloseButton.RawObject.Visible
+    local closeBtnObj = self.CloseButton and (self.CloseButton.RawObject or (typeof(self.CloseButton) == "Instance" and self.CloseButton))
+    if closeBtnObj then
+        closeBtnObj:GetPropertyChangedSignal("Visible"):Connect(function()
+            MacContainer.Visible = closeBtnObj.Visible
+        end)
+        MacContainer.Visible = closeBtnObj.Visible
+    end
 
     self:TagElements{
         [self.TitleLabel] = 'WindowTitle'
@@ -13756,10 +13755,8 @@ return b
 ]==]
 }
 
---// Services
 local Players: Players = Services.Players
 
---// Dependencies
 StartupLog("loading embedded libraries")
 local Modules = Files:LoadLibraries(Scripts)
 StartupLog("loaded embedded libraries")
@@ -13770,7 +13767,6 @@ local Generation = Modules.Generation
 local Communication = Modules.Communication
 local Config = Modules.Config
 
---// Use custom font (optional)
 StartupLog("loading optional font")
 local FontContent = Files:GetAsset("ProggyClean.ttf", true)
 local FontJsonFile = Files:CreateFont("ProggyClean", FontContent)
@@ -13796,7 +13792,7 @@ if not Supported then
 	return
 end
 
---// Create communication channel
+
 local ChannelId, Event = Communication:CreateChannel()
 Communication:AddCommCallback("QueueLog", function(...)
 	Ui:QueueLog(...)
@@ -13836,7 +13832,6 @@ local EnablePatches = Ui:AskUser({
 	Options = {"Ya", "Tidak"}
 }) == "Ya"
 
---// Begin hooks
 Event:Fire("BeginHooks", {
 	PatchFunctions = EnablePatches
 })

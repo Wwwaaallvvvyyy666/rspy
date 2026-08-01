@@ -221,8 +221,7 @@ function Ui:LoadReGui()
 	end
 	ThemeConfig.TextFont = TextFont
 
-	-- InsertService:LoadLocalAsset can yield forever in executor environments.
-	-- Supplying the prefab explicitly prevents ReGui:CheckImportState from using it.
+	
 	if not ReGui.Initialised then
 		local PrefabsId = ReGui.PrefabsId
 		assert(typeof(PrefabsId) == "number" and PrefabsId > 0, "ReGui returned an invalid PrefabsId")
