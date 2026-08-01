@@ -857,8 +857,8 @@ function Ui:MakeTableHeaders(Table, Rows: table)
 end
 
 function Ui:Decompile(Editor: table, Script: Script)
-	local Header = "
-	Editor:SetText("
+	local Header = "-- Decompiling..."
+	Editor:SetText("-- Decompiling...")
 
 	
 	local Decompiled, IsError = Process:Decompile(Script)
