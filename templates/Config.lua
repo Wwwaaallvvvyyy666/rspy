@@ -40,7 +40,6 @@ return {
         Bracket = Color3.fromRGB(204, 204, 204)
     },
 
-    --// UI
     MethodColors = {
         ["fireserver"] = Color3.fromRGB(242, 255, 0),
         ["invokeserver"] = Color3.fromRGB(99, 86, 245),

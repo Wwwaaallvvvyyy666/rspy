@@ -8216,48 +8216,75 @@ MakeCanvas{
     return r
 end
 function p:AddDefaultTitleButtons()
-    local q = self.TileBarConfig
-    local r, s, t = q.
-Collapse, q.Close, self.TitleBarCanvas
+    local t = self.TitleBarCanvas
     if not t then
         t = self:MakeTitleBarCanvas()
     end
+    
+    -- macOS Buttons Container
+    local MacContainer = Instance.new("Frame")
+    MacContainer.BackgroundTransparency = 1
+    MacContainer.Size = UDim2.new(0, 54, 1, 0)
+    MacContainer.LayoutOrder = 1
+    MacContainer.Parent = t.Element
+
+    local UIPadding = Instance.new("UIPadding")
+    UIPadding.PaddingLeft = UDim.new(0, 10)
+    UIPadding.Parent = MacContainer
+
+    local UIListLayout = Instance.new("UIListLayout")
+    UIListLayout.FillDirection = Enum.FillDirection.Horizontal
+    UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+    UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+    UIListLayout.Padding = UDim.new(0, 6)
+    UIListLayout.Parent = MacContainer
+    
+    local function CreateCircle(Color, Order)
+        local btn = Instance.new("TextButton")
+        btn.Text = ""
+        btn.Size = UDim2.new(0, 12, 0, 12)
+        btn.BackgroundColor3 = Color
+        btn.AutoButtonColor = false
+        btn.LayoutOrder = Order
+        local corner = Instance.new("UICorner")
+        corner.CornerRadius = UDim.new(1, 0)
+        corner.Parent = btn
+        
+        local stroke = Instance.new("UIStroke")
+        stroke.Thickness = 1
+        stroke.Color = Color3.new(0,0,0)
+        stroke.Transparency = 0.8
+        stroke.Parent = btn
+        
+        btn.Parent = MacContainer
+        return btn
+    end
+
+    local CloseBtn = CreateCircle(Color3.fromRGB(255, 95, 86), 1)
+    local MinBtn = CreateCircle(Color3.fromRGB(255, 189, 46), 2)
+    local MaxBtn = CreateCircle(Color3.fromRGB(39, 201, 63), 3)
+
+    CloseBtn.MouseButton1Click:Connect(function()
+        self:SetVisible(false)
+    end)
+    MinBtn.MouseButton1Click:Connect(function()
+        self:ToggleCollapsed()
+    end)
+
     aa:CheckConfig(self, {
-        Toggle = t:RadioButton{
-            Icon = r.Image,
-            IconPadding = r.
-IconPadding,
-            LayoutOrder = 1,
-            Ratio = 1,
-            Size = UDim2.new(0, 0),
-            Callback = function()
-                self:
-ToggleCollapsed()
-            end
-        },
-        CloseButton = t:RadioButton{
-            Icon = s.Image,
-            IconPadding = s.
-IconPadding,
-            LayoutOrder = 3,
-            Ratio = 1,
-            Size = UDim2.new(0, 0),
-            Callback = function()
-                self:
-SetVisible(false)
-            end
-        },
         TitleLabel = t:Label{
             ColorTag = 'Title',
             LayoutOrder = 2,
-            Size = UDim2.new(1, 0),
+            Size = UDim2.new(1, -64),
             Active = false,
             Fill = true,
             ClipsDescendants = true,
-            AutomaticSize = Enum.
-AutomaticSize.XY
+            AutomaticSize = Enum.AutomaticSize.XY
         }
     })
+    
+    self.TitleLabel.Element.TextXAlignment = Enum.TextXAlignment.Center
+
     self:TagElements{
         [self.TitleLabel] = 'WindowTitle'
     }

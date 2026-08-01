@@ -1,29 +1,11 @@
 --[[
-	⣿⣿⣿⣿⣿ SIGMASPY V2 ⣿⣿⣿⣿⣿
-	⣿⣿⣯⡉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉
-	⠉⠻⣿⣿⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-	⠀⠀⠈⠻⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-	⠀⠀⠀⠀⠀⠙⢿⣿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀
-	⠀⠀⠀⠀⠀⠀⠀⣉⣿⣿⣿⠆⠀⠀⠀⠀⠀⠀⠀
-	⠀⠀⠀⠀⠀⣠⣾⣿⣿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀
-	⠀⠀⢀⣴⣿⣿⡿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-	⣀⣴⣿⣿⠟⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-	⣿⣿⣟⣁⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀
-	⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 
-	@description SigmaSpy V2 - v26.07.29
+	@description RemoteSpy - v26.07.29
 	@author @nevskiydev (telegram), @vladislavvc (telegram)
-	@base_author @depso (depthso), creator of Sigma Spy
+	@base_author @depso (depthso),
 	@repo https://github.com/Wwwaaallvvvyyy666/remotespy
 	@license MIT
 
-	[13.07.2026 20:44] nevskiy.dev: I finally managed to do it.
-	[14.07.2026 12:31] depso: Delete it
-	[14.07.2026 12:31] depso: That's disrespectful as shit
-	[14.07.2026 12:31] depso: Why would you do that????????
-
-	This file is COMPILED, check /src folder for the source
-	The build script is available in /build
 ]]
 
 --// Single-file build: every /src library, /templates file and /assets file
@@ -34,7 +16,7 @@
 local Info = (function()
 	--// Product identity, the single source of truth for the name, version and credits
 return {
-	Name = "SigmaSpy V2",
+	Name = "RemoteSpy",
 	Version = "v26.07.29",
 	Author = "@nevskiydev (telegram), @vladislavvc (telegram)",
 	AuthorFull = "@depso (depthso)",
@@ -392,7 +374,6 @@ return {
         Bracket = Color3.fromRGB(204, 204, 204)
     },
 
-    --// UI
     MethodColors = {
         ["fireserver"] = Color3.fromRGB(242, 255, 0),
         ["invokeserver"] = Color3.fromRGB(99, 86, 245),
@@ -412,21 +393,8 @@ return {
 
 ]==],
 		["templates/Return Spoofs.lua"] = [==[
---// Sigma Spy custom remote responces
---// The Return *table* will be unpacked for the responce
---// If the return spoof is a function, passed arguments will be also passed to the function
-
 return {
-	-- [game.ReplicatedStorage.Remotes.HelloWorld] = {
-	-- 	Method = "FireServer",
-	-- 	Return = {"Hello world from Sigma Spy!"}
-	-- }
-	-- [game.ReplicatedStorage.Remotes.DepsoIsCool] = {
-	-- 	Method = "FireServer",
-	-- 	Return = function(OriginalFunc, ...)
-	--		return {"Depso", "is awesome!"}
-	-- end
-	-- }
+	
 }
 ]==],
 	}
@@ -489,7 +457,7 @@ local Scripts = {
 	Info = [==[
 --// Product identity, the single source of truth for the name, version and credits
 return {
-	Name = "SigmaSpy V2",
+	Name = "RemoteSpy",
 	Version = "v26.07.29",
 	Author = "@nevskiydev (telegram), @vladislavvc (telegram)",
 	AuthorFull = "@depso (depthso)",
@@ -1701,7 +1669,7 @@ local Ui = {
 		["Desktop"] = UDim2.fromOffset(450, 300),
 	},
     BaseConfig = {
-        Theme = "SigmaSpy",
+        Theme = "RemoteSpy",
         NoScroll = true,
     },
 	OptionTypes = {
@@ -1832,10 +1800,13 @@ function Ui:Init(Data)
 	Files = Modules.Files
 	Info = Modules.Info
 
-	--// Editor placeholder, built here so the name stays in one place
-	self.DefaultEditorContent = `--[[\n\t{Info.Name} {Info.Version}\n\tOriginal Sigma Spy by {Info.Author}\n\n\t{Info.Repo}\n]]`
+	self.DefaultEditorContent = `--[[
+	{Info.Name} {Info.Version}
+	Original Remote Spy by {Info.Author}
 
-	--// ReGui
+	{Info.Repo}
+]]`
+
 	ReGui = Modules.ReGui or ReGui or LoadRemoteModule("ReGui", Configuration.ReGuiUrl or DefaultReGuiUrl)
 	ReGui.PrefabsId = Configuration.ReGuiPrefabsId or ReGui.PrefabsId
 	self:LoadFont()
@@ -1925,7 +1896,7 @@ function Ui:LoadReGui()
 	end
 
 	--// ReGui
-	ReGui:DefineTheme("SigmaSpy", ThemeConfig)
+	ReGui:DefineTheme("RemoteSpy", ThemeConfig)
 end
 
 type CreateButtons = {
@@ -2142,7 +2113,7 @@ function Ui:CreateElements(Parent, Options)
 	end
 end
 
---// Boiiii what did you say about Sigma Spy 💀💀
+--// Boiiii what did you say about Remote Spy 💀💀
 function Ui:DisplayAura()
     local Window = self.Window
     local Rand = self.RandomSeed
@@ -2336,7 +2307,7 @@ function Ui:AddDetailsSection(OptionsTab)
 	OptionsTab:BulletText({
 		Rows = {
 			`{Info.Name} - {Info.Version}`,
-			`Original Sigma Spy written by {Info.Author}`,
+			`Original Remote Spy written by {Info.Author}`,
 			`{Info.Author}: "I am not happy with this version" (joke, not a real quote)`,
 			"Libraries: Roblox-Parser, Dear-ReGui",
 			"Thank you syn.lua for suggesting I make this"
@@ -2386,7 +2357,7 @@ function Ui:MakeEditorTab(InfoSelector)
 				Text = "Run",
 				Callback = function()
 					local Script = CodeEditor:GetText()
-					local Func, Error = loadstring(Script, "SigmaSpy-USERSCRIPT")
+					local Func, Error = loadstring(Script, "RemoteSpy-USERSCRIPT")
 
 					--// Syntax check
 					if not Func then
@@ -2489,7 +2460,7 @@ function Ui:EditFile(FilePath: string, InFolder: boolean, OnSaveFunc: ((table, s
 			Text = "Save",
 			Callback = function()
 				local Script = CodeEditor:GetText()
-				local Success, Error = loadstring(Script, "SigmaSpy-Editor")
+				local Success, Error = loadstring(Script, "RemoteSpy-Editor")
 
 				--// Syntax check
 				if not Success then
@@ -2567,7 +2538,7 @@ function Ui:MakeTableHeaders(Table, Rows: table)
 end
 
 function Ui:Decompile(Editor: table, Script: Script)
-	local Header = "--BOOIIII THIS IS SO TUFF FLIPPY SKIBIDI AURA (SIGMA SPY)"
+	local Header = "--BOOIIII THIS IS SO TUFF FLIPPY SKIBIDI AURA (REMOTE SPY)"
 	Editor:SetText("--Decompiling... +9999999 AURA (mango phonk)")
 
 	--// Decompile script
@@ -12214,48 +12185,75 @@ MakeCanvas{
     return r
 end
 function p:AddDefaultTitleButtons()
-    local q = self.TileBarConfig
-    local r, s, t = q.
-Collapse, q.Close, self.TitleBarCanvas
+    local t = self.TitleBarCanvas
     if not t then
         t = self:MakeTitleBarCanvas()
     end
+    
+    -- macOS Buttons Container
+    local MacContainer = Instance.new("Frame")
+    MacContainer.BackgroundTransparency = 1
+    MacContainer.Size = UDim2.new(0, 54, 1, 0)
+    MacContainer.LayoutOrder = 1
+    MacContainer.Parent = t.Element
+
+    local UIPadding = Instance.new("UIPadding")
+    UIPadding.PaddingLeft = UDim.new(0, 10)
+    UIPadding.Parent = MacContainer
+
+    local UIListLayout = Instance.new("UIListLayout")
+    UIListLayout.FillDirection = Enum.FillDirection.Horizontal
+    UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+    UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+    UIListLayout.Padding = UDim.new(0, 6)
+    UIListLayout.Parent = MacContainer
+    
+    local function CreateCircle(Color, Order)
+        local btn = Instance.new("TextButton")
+        btn.Text = ""
+        btn.Size = UDim2.new(0, 12, 0, 12)
+        btn.BackgroundColor3 = Color
+        btn.AutoButtonColor = false
+        btn.LayoutOrder = Order
+        local corner = Instance.new("UICorner")
+        corner.CornerRadius = UDim.new(1, 0)
+        corner.Parent = btn
+        
+        local stroke = Instance.new("UIStroke")
+        stroke.Thickness = 1
+        stroke.Color = Color3.new(0,0,0)
+        stroke.Transparency = 0.8
+        stroke.Parent = btn
+        
+        btn.Parent = MacContainer
+        return btn
+    end
+
+    local CloseBtn = CreateCircle(Color3.fromRGB(255, 95, 86), 1)
+    local MinBtn = CreateCircle(Color3.fromRGB(255, 189, 46), 2)
+    local MaxBtn = CreateCircle(Color3.fromRGB(39, 201, 63), 3)
+
+    CloseBtn.MouseButton1Click:Connect(function()
+        self:SetVisible(false)
+    end)
+    MinBtn.MouseButton1Click:Connect(function()
+        self:ToggleCollapsed()
+    end)
+
     aa:CheckConfig(self, {
-        Toggle = t:RadioButton{
-            Icon = r.Image,
-            IconPadding = r.
-IconPadding,
-            LayoutOrder = 1,
-            Ratio = 1,
-            Size = UDim2.new(0, 0),
-            Callback = function()
-                self:
-ToggleCollapsed()
-            end
-        },
-        CloseButton = t:RadioButton{
-            Icon = s.Image,
-            IconPadding = s.
-IconPadding,
-            LayoutOrder = 3,
-            Ratio = 1,
-            Size = UDim2.new(0, 0),
-            Callback = function()
-                self:
-SetVisible(false)
-            end
-        },
         TitleLabel = t:Label{
             ColorTag = 'Title',
             LayoutOrder = 2,
-            Size = UDim2.new(1, 0),
+            Size = UDim2.new(1, -64),
             Active = false,
             Fill = true,
             ClipsDescendants = true,
-            AutomaticSize = Enum.
-AutomaticSize.XY
+            AutomaticSize = Enum.AutomaticSize.XY
         }
     })
+    
+    self.TitleLabel.Element.TextXAlignment = Enum.TextXAlignment.Center
+
     self:TagElements{
         [self.TitleLabel] = 'WindowTitle'
     }
@@ -13767,14 +13765,11 @@ Generation:SetSwapsCallback(function(self)
 	})
 end)
 
---// Create window content
 Ui:CreateWindowContent(Window)
 
---// Begin the Log queue 
 Ui:SetCommChannel(Event)
 Ui:BeginLogService()
 
---// Load hooks
 local ActorCode = Files:MakeActorScript(Scripts, ChannelId)
 Hook:LoadHooks(ActorCode, ChannelId)
 

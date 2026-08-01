@@ -133,14 +133,11 @@ Generation:SetSwapsCallback(function(self)
 	})
 end)
 
---// Create window content
 Ui:CreateWindowContent(Window)
 
---// Begin the Log queue 
 Ui:SetCommChannel(Event)
 Ui:BeginLogService()
 
---// Load hooks
 local ActorCode = Files:MakeActorScript(Scripts, ChannelId)
 Hook:LoadHooks(ActorCode, ChannelId)
 

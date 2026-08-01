@@ -20,7 +20,7 @@ local Ui = {
 		["Desktop"] = UDim2.fromOffset(450, 300),
 	},
     BaseConfig = {
-        Theme = "SigmaSpy",
+        Theme = "RemoteSpy",
         NoScroll = true,
     },
 	OptionTypes = {
@@ -151,10 +151,13 @@ function Ui:Init(Data)
 	Files = Modules.Files
 	Info = Modules.Info
 
-	--// Editor placeholder, built here so the name stays in one place
-	self.DefaultEditorContent = `--[[\n\t{Info.Name} {Info.Version}\n\tOriginal Sigma Spy by {Info.Author}\n\n\t{Info.Repo}\n]]`
+	self.DefaultEditorContent = `--[[
+	{Info.Name} {Info.Version}
+	Original Remote Spy by {Info.Author}
 
-	--// ReGui
+	{Info.Repo}
+]]`
+
 	ReGui = Modules.ReGui or ReGui or LoadRemoteModule("ReGui", Configuration.ReGuiUrl or DefaultReGuiUrl)
 	ReGui.PrefabsId = Configuration.ReGuiPrefabsId or ReGui.PrefabsId
 	self:LoadFont()
@@ -244,7 +247,7 @@ function Ui:LoadReGui()
 	end
 
 	--// ReGui
-	ReGui:DefineTheme("SigmaSpy", ThemeConfig)
+	ReGui:DefineTheme("RemoteSpy", ThemeConfig)
 end
 
 type CreateButtons = {
@@ -461,7 +464,7 @@ function Ui:CreateElements(Parent, Options)
 	end
 end
 
---// Boiiii what did you say about Sigma Spy 💀💀
+--// Boiiii what did you say about Remote Spy 💀💀
 function Ui:DisplayAura()
     local Window = self.Window
     local Rand = self.RandomSeed
@@ -655,7 +658,7 @@ function Ui:AddDetailsSection(OptionsTab)
 	OptionsTab:BulletText({
 		Rows = {
 			`{Info.Name} - {Info.Version}`,
-			`Original Sigma Spy written by {Info.Author}`,
+			`Original Remote Spy written by {Info.Author}`,
 			`{Info.Author}: "I am not happy with this version" (joke, not a real quote)`,
 			"Libraries: Roblox-Parser, Dear-ReGui",
 			"Thank you syn.lua for suggesting I make this"
@@ -705,7 +708,7 @@ function Ui:MakeEditorTab(InfoSelector)
 				Text = "Run",
 				Callback = function()
 					local Script = CodeEditor:GetText()
-					local Func, Error = loadstring(Script, "SigmaSpy-USERSCRIPT")
+					local Func, Error = loadstring(Script, "RemoteSpy-USERSCRIPT")
 
 					--// Syntax check
 					if not Func then
@@ -808,7 +811,7 @@ function Ui:EditFile(FilePath: string, InFolder: boolean, OnSaveFunc: ((table, s
 			Text = "Save",
 			Callback = function()
 				local Script = CodeEditor:GetText()
-				local Success, Error = loadstring(Script, "SigmaSpy-Editor")
+				local Success, Error = loadstring(Script, "RemoteSpy-Editor")
 
 				--// Syntax check
 				if not Success then
@@ -886,7 +889,7 @@ function Ui:MakeTableHeaders(Table, Rows: table)
 end
 
 function Ui:Decompile(Editor: table, Script: Script)
-	local Header = "--BOOIIII THIS IS SO TUFF FLIPPY SKIBIDI AURA (SIGMA SPY)"
+	local Header = "--BOOIIII THIS IS SO TUFF FLIPPY SKIBIDI AURA (REMOTE SPY)"
 	Editor:SetText("--Decompiling... +9999999 AURA (mango phonk)")
 
 	--// Decompile script
