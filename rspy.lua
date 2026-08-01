@@ -12187,7 +12187,7 @@ function p:AddDefaultTitleButtons()
     MacContainer.BackgroundTransparency = 1
     MacContainer.Size = UDim2.new(0, 54, 1, 0)
     MacContainer.LayoutOrder = 1
-    MacContainer.Parent = t.Element
+    MacContainer.Parent = t.RawObject
 
     local UIPadding = Instance.new("UIPadding")
     UIPadding.PaddingLeft = UDim.new(0, 10)
@@ -12240,15 +12240,14 @@ function p:AddDefaultTitleButtons()
             Active = false,
             Fill = true,
             ClipsDescendants = true,
-            AutomaticSize = Enum.AutomaticSize.XY
+            AutomaticSize = Enum.AutomaticSize.XY,
+            TextXAlignment = Enum.TextXAlignment.Center
         }
     })
     
     self.Toggle = {
         Icon = Instance.new("ImageLabel")
     }
-    
-    self.TitleLabel.Element.TextXAlignment = Enum.TextXAlignment.Center
 
     self:TagElements{
         [self.TitleLabel] = 'WindowTitle'
