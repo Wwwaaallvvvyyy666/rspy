@@ -182,8 +182,8 @@ function Files:LoadLibraries(Scripts: table, ...): table
 		Content = IsBase64 and Content[2] or Content
 
 		
-		if typeof(Content) == "string" and string.find(Content, "^COMPILE:%s*@") then
-			local ModulePath = Content:match("^COMPILE:%s*@(.*)")
+		if typeof(Content) == "string" and string.find(Content, "^COMP" .. "ILE:%s*@") then
+			local ModulePath = Content:match("^COMP" .. "ILE:%s*@(.*)")
 			if ModulePath then
 				if ModulePath == "lib/ReGui.lua" then
 					ModulePath = "../Gui/gui.lua"

@@ -10,6 +10,15 @@
 
 
 
+local RepoUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main"
+local function FetchModule(Path)
+	local Success, Result = pcall(function() return game:HttpGet(RepoUrl .. "/" .. Path) end)
+	if not Success then return nil end
+	local Func = loadstring(Result)
+	if not Func then return nil end
+	return Func()
+end
+
 local Info = (function()
 	
 return {
@@ -20,16 +29,16 @@ return {
 	Repo = "https://github.com/Wwwaaallvvvyyy666/remotespy",
 }
 
-end)()
+end)() or FetchModule("src/lib/Info.lua")
 
 local Configuration = {
 	UseWorkspace = false,
 	NoActors = false,
 	FolderName = Info.Name,
-	RepoUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main",
-	ReGuiUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/Gui/gui.lua",
+	RepoUrl = RepoUrl,
+	ReGuiUrl = RepoUrl .. "/Gui/gui.lua",
 	ReGuiPrefabsId = 122589944740561,
-	ParserUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/parser/parser.lua"
+	ParserUrl = RepoUrl .. "/parser/parser.lua"
 }
 
 
@@ -71,7 +80,7 @@ if typeof(Overwrites) == "table" then
 	end
 end
 
---// Service handler
+
 local Services = setmetatable({}, {
 	__index = function(self, Name: string): Instance
 		local Service = game:GetService(Name)
@@ -79,7 +88,7 @@ local Services = setmetatable({}, {
 	end,
 })
 
---// Files module
+
 StartupLog("initializing file system")
 local Files = (function()
 	type table = {
@@ -266,6 +275,22 @@ function Files:LoadLibraries(Scripts: table, ...): table
 		Content = IsBase64 and Content[2] or Content
 
 		
+		if typeof(Content) == "string" and string.find(Content, "^COMP" .. "ILE:%s*@") then
+			local ModulePath = Content:match("^COMP" .. "ILE:%s*@(.*)")
+			if ModulePath then
+				if ModulePath == "lib/ReGui.lua" then
+					ModulePath = "../Gui/gui.lua"
+				elseif ModulePath == "lib/Parser.lua" then
+					ModulePath = "../parser/parser.lua"
+				end
+				
+				local FullUrl = `{self.RepoUrl}/src/{ModulePath}`
+				Content = self:UrlFetch(FullUrl)
+				IsBase64 = false
+			end
+		end
+
+		
 		if typeof(Content) ~= "string" and not IsBase64 then 
 			Modules[Name] = Content
 			continue 
@@ -346,7 +371,7 @@ end
 
 return Files
 
-end)()
+end)() or FetchModule("src/lib/Files.lua")
 
 do
 	local SourceFiles = {
