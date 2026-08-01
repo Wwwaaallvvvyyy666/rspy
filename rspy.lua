@@ -10,7 +10,7 @@
 
 
 
-local RepoUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main"
+local RepoUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/rspy/main"
 local function FetchModule(Path)
 	local Success, Result = pcall(function() return game:HttpGet(RepoUrl .. "/" .. Path) end)
 	if not Success then return nil end
