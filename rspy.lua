@@ -12249,6 +12249,10 @@ function p:AddDefaultTitleButtons()
         }
     })
     
+    self.Toggle = {
+        Icon = Instance.new("ImageLabel")
+    }
+    
     self.TitleLabel.Element.TextXAlignment = Enum.TextXAlignment.Center
 
     self:TagElements{
