@@ -1,19 +1,24 @@
+local RepoUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main"
+local function FetchModule(Path)
+	local Success, Result = pcall(function() return game:HttpGet(RepoUrl .. "/" .. Path) end)
+	if not Success then return nil end
+	local Func = loadstring(Result)
+	if not Func then return nil end
+	return Func()
+end
+
 local Info = (function()
 	--INSERT: @lib/Info.lua
-end)()
-if not Info then
-	local Success, Result = pcall(game.HttpGet, game, "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/src/lib/Info.lua")
-	if Success and Result then Info = loadstring(Result)() end
-end
+end)() or FetchModule("src/lib/Info.lua")
 
 local Configuration = {
 	UseWorkspace = false,
 	NoActors = false,
 	FolderName = Info.Name,
-	RepoUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main",
-	ReGuiUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/Gui/gui.lua",
+	RepoUrl = RepoUrl,
+	ReGuiUrl = RepoUrl .. "/Gui/gui.lua",
 	ReGuiPrefabsId = 122589944740561,
-	ParserUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/parser/parser.lua"
+	ParserUrl = RepoUrl .. "/parser/parser.lua"
 }
 
 
@@ -55,7 +60,7 @@ if typeof(Overwrites) == "table" then
 	end
 end
 
---// Service handler
+
 local Services = setmetatable({}, {
 	__index = function(self, Name: string): Instance
 		local Service = game:GetService(Name)
@@ -63,15 +68,11 @@ local Services = setmetatable({}, {
 	end,
 })
 
---// Files module
+
 StartupLog("initializing file system")
 local Files = (function()
 	--INSERT: @lib/Files.lua
-end)()
-if type(Files) ~= "table" then
-	local Success, Result = pcall(game.HttpGet, game, "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/src/lib/Files.lua")
-	if Success and Result then Files = loadstring(Result)() end
-end
+end)() or FetchModule("src/lib/Files.lua")
 Files:PushConfig(Configuration)
 Files:Init({
 	Services = Services,
