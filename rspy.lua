@@ -3212,7 +3212,7 @@ function Generation:Init(Data: table)
 
 	
 	self.DumpBaseName = `{Info.Name:gsub(" ", "")}-Dump %s.lua`
-	self.Header = `
+	self.Header = "-- Generated with " .. Info.Name .. " " .. Info.Version .. "\\n"
 end
 
 function Generation:MakePrintable(String: string): string
