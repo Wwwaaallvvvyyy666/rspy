@@ -1,10 +1,8 @@
---// Libraries
 local fs = require("@lune/fs")
 local process = require("@lune/process")
 local serde = require("@lune/serde")
 local Base64 = require("../lib/reselim/base64@3.0.0/Base64")
 
---// Configuration
 local ConfigFile = fs.readFile(process.args[1])
 local Config = serde.decode("json", ConfigFile)
 
@@ -20,7 +18,6 @@ local function GetTagPath(Tag: string, Path: string): string
     return Path:gsub(Tag, TagPath)
 end
 
---// Good enough
 local function GetPath(Path: string): string
     local IsTag = Path:sub(1,1) == "@"
     if IsTag then
@@ -31,7 +28,6 @@ local function GetPath(Path: string): string
     return Path
 end
 
--- Format: --COMPILE: path
 local function ReplaceCompiles(Content: string): string
     local Match = '[%-]*%s*"(%s*COMPILE:%s*@[^"]+)"'
 
@@ -68,7 +64,6 @@ local function ReplaceInserts(Content: string): string
     return Content
 end
 
---// Compile
 local Processed = ReplaceCompiles(MainFile)
 Processed = ReplaceInserts(Processed)
 fs.writeFile(OutputFile, Processed)
@@ -81,7 +76,6 @@ local DarkLuaResponce = process.spawn("darklua", {
 	DarkluaConfig,
 })
 
---// Print error message
 if not DarkLuaResponce.ok then
 	print(DarkLuaResponce.stderr)
 	return
