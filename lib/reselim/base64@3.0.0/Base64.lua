@@ -1,7 +1,4 @@
---[[
-    @author: Reselim
-    @repo: https://github.com/Reselim/Base64
-]]
+
 
 local Base64 = {}
 
