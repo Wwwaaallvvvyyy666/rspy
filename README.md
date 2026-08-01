@@ -16,7 +16,7 @@ A complete Remote Spy with an incredible parser that captures incoming and outgo
 
 ```lua
 --// SigmaSpy V2 | Modified
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/Main.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/rspy.lua"))()
 ```
 
 The build is self-contained: the config template, the return-spoofs template and the ImGui font are embedded in the file itself, so nothing is downloaded from this repository at runtime. Only the two external libraries (ReGui and Roblox-Parser) are still fetched over HTTP.
@@ -24,7 +24,7 @@ The build is self-contained: the config template, the return-spoofs template and
 If your executor supports `readfile`, you can run it straight from the workspace folder instead:
 
 ```lua
-loadstring(readfile("SigmaSpyV2.luau"), "SigmaSpy V2")()
+loadstring(readfile("rspy.lua"), "SigmaSpy V2")()
 ```
 
 ## What changed in V2 🔧
@@ -103,7 +103,7 @@ You will be prompted if your executor is missing something.
 
 ## Building 🛠️
 
-`SigmaSpyV2.luau` in the repository root is generated — edit the sources in `src/`, then rebuild:
+`rspy.lua` in the repository root is generated - edit the sources in `src/`, then rebuild:
 
 ```sh
 python build/bundle.py
@@ -117,9 +117,9 @@ templates/       Config.lua and Return Spoofs.lua, embedded into the build
 assets/          ImGui font, embedded into the build
 build/           bundle.py (current), build.lua + darklua.json (legacy lune pipeline), frame.lua banner template
 lib/             base64 helper, used by the legacy lune pipeline only
-SigmaSpyV2.luau  generated single-file build
+rspy.lua         generated single-file build
 Main.lua         legacy minified darklua build, kept for reference
-.index.html      local dev loader for Main.lua over `py -m http.server`
+.index.html      local dev loader for rspy.lua over `py -m http.server`
 ```
 
 For local testing you can serve the repository and load the build over HTTP:
@@ -130,7 +130,7 @@ py -m http.server 3000 --bind 127.0.0.1
 
 ```lua
 local Url = "http://127.0.0.1:3000"
-local Source = game:HttpGet(`{Url}/SigmaSpyV2.luau?cache={os.clock()}`)
+local Source = game:HttpGet(`{Url}/rspy.lua?cache={os.clock()}`)
 local Main, Error = loadstring(Source, "SigmaSpy V2")
 assert(Main, Error)
 Main({ RepoUrl = Url })
