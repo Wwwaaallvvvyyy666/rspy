@@ -743,8 +743,8 @@ local F=p:Column()F:Label{Text=E}continue end local F=p:NextColumn()F:Label{Text
 ExtraDark=Color3.fromRGB(28,39,53),White=Color3.fromRGB(240,240,240),Gray=Color3
 .fromRGB(172,171,175),Black=Color3.fromRGB(15,19,24),Yellow=Color3.fromRGB(230,
 180,0),Orange=Color3.fromRGB(230,150,0),Green=Color3.fromRGB(130,188,91),Red=
-Color3.fromRGB(255,69,69),ImGui={Light=Color3.fromRGB(66,150,250),Dark=Color3.
-fromRGB(41,74,122),Black=Color3.fromRGB(15,15,15),Gray=Color3.fromRGB(36,36,36)}
+Color3.fromRGB(255,69,69),ImGui={Light=Color3.fromRGB(255,95,86),Dark=Color3.
+fromRGB(30,30,30),Black=Color3.fromRGB(15,15,15),Gray=Color3.fromRGB(36,36,36)}
 }end function a.h()local aa,ab=a.load'g',{}ab.DarkTheme={Values={
 AnimationTweenInfo=TweenInfo.new(0.08),TextFont=Font.fromEnum(Enum.Font.
 RobotoMono),TextSize=14,Text=aa.White,TextDisabled=aa.Gray,ErrorText=aa.Red,
