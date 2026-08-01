@@ -600,7 +600,7 @@ function Process:ProcessRemote(Data: RemoteData, Remote, ...): table?
     --// Queue log
     Communication:QueueLog(Data)
 
-    return ReturnValues
+    return self:Unpack(ReturnValues)
 end
 
 function Process:SetAllRemoteData(Key: string, Value)

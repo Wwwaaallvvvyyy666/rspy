@@ -351,7 +351,6 @@ do
 	local SourceFiles = {
 		["templates/Config.lua"] = [==[
 return {
-    --// Hooking
     ForceUseCustomComm = false,
     ReplaceMetaCallFunc = false,
     NoReceiveHooking = false,
@@ -359,10 +358,8 @@ return {
         "RobloxReplicatedStorage"
     },
 
-    --// Processing
     ForceKonstantDecompiler = false,
 
-    --// Editor
     VariableNames = {
         "RIFT_IS_DETECTED%.d", 
         "FullyXYZ_IS_UD%.d",
@@ -1103,7 +1100,7 @@ function Process:ProcessRemote(Data: RemoteData, Remote, ...): table?
     --// Queue log
     Communication:QueueLog(Data)
 
-    return ReturnValues
+    return self:Unpack(ReturnValues)
 end
 
 function Process:SetAllRemoteData(Key: string, Value)
