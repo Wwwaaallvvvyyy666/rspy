@@ -90,7 +90,6 @@ local FontJsonFile = Files:CreateFont("ProggyClean", FontContent)
 Ui:SetFontFile(FontJsonFile)
 StartupLog("loaded optional font")
 
---// Load modules
 Process:CheckConfig(Config)
 StartupLog("initializing modules")
 Files:LoadModules(Modules, {
@@ -100,12 +99,10 @@ Files:LoadModules(Modules, {
 })
 StartupLog("initialized modules")
 
---// ReGui Create window
 StartupLog("creating main window")
 local Window = Ui:CreateMainWindow()
 StartupLog("created main window")
 
---// Check if this executor is supported
 local Supported = Process:CheckIsSupported()
 if not Supported then 
 	Window:Close()
@@ -121,7 +118,6 @@ Communication:AddCommCallback("Print", function(...)
 	Ui:ConsoleLog(...)
 end)
 
---// Generation swaps
 local LocalPlayer = Players.LocalPlayer
 Generation:SetSwapsCallback(function(self)
 	self:AddSwap(LocalPlayer, {

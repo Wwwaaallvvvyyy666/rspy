@@ -15,9 +15,7 @@ type RemoteData = {
     OriginalFunc: (Instance, ...any) -> ...any
 }
 
---// Module
 local Process = {
-    --// Remote classes
     RemoteClassData = {
         ["RemoteEvent"] = {
             Send = {

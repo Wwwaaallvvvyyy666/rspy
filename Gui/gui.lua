@@ -8221,7 +8221,6 @@ function p:AddDefaultTitleButtons()
         t = self:MakeTitleBarCanvas()
     end
     
-    -- macOS Buttons Container
     local MacContainer = Instance.new("Frame")
     MacContainer.BackgroundTransparency = 1
     MacContainer.Size = UDim2.new(0, 54, 1, 0)

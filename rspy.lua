@@ -483,9 +483,7 @@ type RemoteData = {
     OriginalFunc: (Instance, ...any) -> ...any
 }
 
---// Module
 local Process = {
-    --// Remote classes
     RemoteClassData = {
         ["RemoteEvent"] = {
             Send = {
@@ -12190,7 +12188,6 @@ function p:AddDefaultTitleButtons()
         t = self:MakeTitleBarCanvas()
     end
     
-    -- macOS Buttons Container
     local MacContainer = Instance.new("Frame")
     MacContainer.BackgroundTransparency = 1
     MacContainer.Size = UDim2.new(0, 54, 1, 0)
@@ -13722,7 +13719,6 @@ local FontJsonFile = Files:CreateFont("ProggyClean", FontContent)
 Ui:SetFontFile(FontJsonFile)
 StartupLog("loaded optional font")
 
---// Load modules
 Process:CheckConfig(Config)
 StartupLog("initializing modules")
 Files:LoadModules(Modules, {
@@ -13732,12 +13728,10 @@ Files:LoadModules(Modules, {
 })
 StartupLog("initialized modules")
 
---// ReGui Create window
 StartupLog("creating main window")
 local Window = Ui:CreateMainWindow()
 StartupLog("created main window")
 
---// Check if this executor is supported
 local Supported = Process:CheckIsSupported()
 if not Supported then 
 	Window:Close()
@@ -13753,7 +13747,6 @@ Communication:AddCommCallback("Print", function(...)
 	Ui:ConsoleLog(...)
 end)
 
---// Generation swaps
 local LocalPlayer = Players.LocalPlayer
 Generation:SetSwapsCallback(function(self)
 	self:AddSwap(LocalPlayer, {
