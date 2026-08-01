@@ -12230,7 +12230,7 @@ function p:AddDefaultTitleButtons()
     MacContainer.Position = UDim2.new(0, 0, 0.5, 0)
     MacContainer.AnchorPoint = Vector2.new(0, 0.5)
     MacContainer.AutomaticSize = Enum.AutomaticSize.XY
-    MacContainer.LayoutOrder = 1
+    MacContainer.LayoutOrder = 0
     MacContainer.Parent = t.RawObject
 
     local UIPadding = Instance.new("UIPadding")
@@ -12246,11 +12246,9 @@ function p:AddDefaultTitleButtons()
     UIListLayout.Parent = MacContainer
     
     local function CreateCircle(Color, Order)
-        local btn = Instance.new("TextButton")
-        btn.Text = ""
+        local btn = Instance.new("Frame")
         btn.Size = UDim2.new(0, 12, 0, 12)
         btn.BackgroundColor3 = Color
-        btn.AutoButtonColor = false
         btn.LayoutOrder = Order
         local corner = Instance.new("UICorner")
         corner.CornerRadius = UDim.new(1, 0)
@@ -12270,14 +12268,27 @@ function p:AddDefaultTitleButtons()
     local MinBtn = CreateCircle(Color3.fromRGB(255, 189, 46), 2)
     local MaxBtn = CreateCircle(Color3.fromRGB(39, 201, 63), 3)
 
-    CloseBtn.MouseButton1Click:Connect(function()
-        self:SetVisible(false)
-    end)
-    MinBtn.MouseButton1Click:Connect(function()
-        self:ToggleCollapsed()
-    end)
-
     aa:CheckConfig(self, {
+        Toggle = t:RadioButton{
+            ColorTag = 'Toggle',
+            LayoutOrder = 1,
+            Ratio = 1,
+            Size = UDim2.new(0, 0),
+            AutomaticSize = Enum.AutomaticSize.Y,
+            Fill = true,
+            Active = false,
+            Icon = aa.Icons.Arrow
+        },
+        CloseButton = t:RadioButton{
+            ColorTag = 'Close',
+            LayoutOrder = 3,
+            Ratio = 1,
+            Size = UDim2.new(0, 0),
+            AutomaticSize = Enum.AutomaticSize.Y,
+            Fill = true,
+            Active = false,
+            Icon = aa.Icons.Close
+        },
         TitleLabel = t:Label{
             ColorTag = 'Title',
             LayoutOrder = 2,
@@ -12290,21 +12301,13 @@ function p:AddDefaultTitleButtons()
         }
     })
     
-    self.CloseButton = setmetatable({}, {
-        __newindex = function(t, k, v)
-            if k == "Visible" then CloseBtn.Visible = v end
-            rawset(t, k, v)
-        end
-    })
-    self.Toggle = setmetatable({ Icon = Instance.new("ImageLabel") }, {
-        __newindex = function(t, k, v)
-            if k == "Visible" then 
-                MinBtn.Visible = v 
-                MaxBtn.Visible = v
-            end
-            rawset(t, k, v)
-        end
-    })
+    self.Toggle.Icon.Rotation = 90
+    
+    -- Hide MacOS decorations if native close button is hidden (e.g. on Popups)
+    self.CloseButton.RawObject:GetPropertyChangedSignal("Visible"):Connect(function()
+        MacContainer.Visible = self.CloseButton.RawObject.Visible
+    end)
+    MacContainer.Visible = self.CloseButton.RawObject.Visible
 
     self:TagElements{
         [self.TitleLabel] = 'WindowTitle'
