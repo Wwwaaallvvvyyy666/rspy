@@ -1,6 +1,10 @@
 local Info = (function()
 	--INSERT: @lib/Info.lua
 end)()
+if not Info then
+	local Success, Result = pcall(game.HttpGet, game, "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/src/lib/Info.lua")
+	if Success and Result then Info = loadstring(Result)() end
+end
 
 local Configuration = {
 	UseWorkspace = false,
@@ -64,6 +68,10 @@ StartupLog("initializing file system")
 local Files = (function()
 	--INSERT: @lib/Files.lua
 end)()
+if type(Files) ~= "table" then
+	local Success, Result = pcall(game.HttpGet, game, "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/src/lib/Files.lua")
+	if Success and Result then Files = loadstring(Result)() end
+end
 Files:PushConfig(Configuration)
 Files:Init({
 	Services = Services,

@@ -182,6 +182,25 @@ function Files:LoadLibraries(Scripts: table, ...): table
 		Content = IsBase64 and Content[2] or Content
 
 		
+		if IsBase64 and string.match(Content, "^COMPILE: @") then
+			local DevPath = string.match(Content, "^COMPILE: @(.+)$")
+			local RepoUrl = self.Configuration and self.Configuration.RepoUrl or "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main"
+			local FetchPath = DevPath
+			if Name == "ReGui" then
+				FetchPath = "Gui/gui.lua"
+			elseif Name == "Parser" then
+				FetchPath = "parser/parser.lua"
+			else
+				FetchPath = "src/" .. FetchPath
+			end
+			local Success, Result = pcall(game.HttpGet, game, RepoUrl .. "/" .. FetchPath)
+			if Success and Result then
+				Content = Result
+				IsBase64 = false
+			end
+		end
+
+		
 		if typeof(Content) ~= "string" and not IsBase64 then 
 			Modules[Name] = Content
 			continue 
