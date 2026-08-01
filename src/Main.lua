@@ -95,7 +95,8 @@ Process:CheckConfig(Config)
 StartupLog("initializing modules")
 Files:LoadModules(Modules, {
 	Modules = Modules,
-	Services = Services
+	Services = Services,
+	Info = Info
 })
 StartupLog("initialized modules")
 

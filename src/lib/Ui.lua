@@ -155,7 +155,7 @@ function Ui:Init(Data)
 	self.DefaultEditorContent = `--[[\n\t{Info.Name} {Info.Version}\n\tOriginal Sigma Spy by {Info.Author}\n\n\t{Info.Repo}\n]]`
 
 	--// ReGui
-	ReGui = ReGui or LoadRemoteModule("ReGui", Configuration.ReGuiUrl or DefaultReGuiUrl)
+	ReGui = Modules.ReGui or ReGui or LoadRemoteModule("ReGui", Configuration.ReGuiUrl or DefaultReGuiUrl)
 	ReGui.PrefabsId = Configuration.ReGuiPrefabsId or ReGui.PrefabsId
 	self:LoadFont()
 	self:LoadReGui()
