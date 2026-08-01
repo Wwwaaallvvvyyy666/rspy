@@ -3366,7 +3366,7 @@ function Generation:CallRemoteScript(Data, Info: CallInfo): string
 		local Second = ItemsCount <= 0 and "" or `, {ParsedArgs}`
 		local Signal = `{RemoteVariable}.{Method}`
 
-		local Code = `
+		local Code = "-- This data was received from the server"
 		ParsedArgs = self:Indent(IndentString, Code)
 		Code ..= `\n{IndentString}firesignal({Signal}{Second})`
 		
