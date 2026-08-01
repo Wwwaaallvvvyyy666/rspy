@@ -1392,7 +1392,7 @@ PreHighlight = function(G)
                 O(H, '"', 1, true)
                 O(H, "'", 2, true)
                 O(H, '%[(=*)%[', 3)
-                O(H, '--', 4, true)
+                O(H, '
                 table.sort(J)
                 local P, Q, R, S, T = G.NewLines, 0, 0, 0, {}
                 for U = 1, # J do
@@ -8257,7 +8257,9 @@ function p:AddDefaultTitleButtons()
     UIListLayout.Parent = MacContainer
     
     local function CreateCircle(Color, Order)
-        local btn = Instance.new("Frame")
+        local btn = Instance.new("TextButton")
+        btn.Text = ""
+        btn.AutoButtonColor = false
         btn.Size = UDim2.new(0, 12, 0, 12)
         btn.BackgroundColor3 = Color
         btn.LayoutOrder = Order
@@ -8276,6 +8278,9 @@ function p:AddDefaultTitleButtons()
     end
 
     local CloseBtn = CreateCircle(Color3.fromRGB(255, 95, 86), 1)
+    CloseBtn.Activated:Connect(function()
+        pcall(function() self:Close() end)
+    end)
     local MinBtn = CreateCircle(Color3.fromRGB(255, 189, 46), 2)
     local MaxBtn = CreateCircle(Color3.fromRGB(39, 201, 63), 3)
 

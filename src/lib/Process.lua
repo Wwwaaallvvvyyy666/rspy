@@ -74,17 +74,17 @@ local Process = {
     }
 }
 
---// Modules
+
 local Hook
 local Communication
 local ReturnSpoofs
 local Ui
 local Config
 
---// Services
+
 local HttpService: HttpService
 
---// Communication channel
+
 local Channel
 local WrappedChannel = false
 
@@ -101,10 +101,10 @@ function Process:Init(Data)
     local Modules = Data.Modules
     local Services = Data.Services
 
-    --// Services
+    
     HttpService = Services.HttpService
 
-    --// Modules
+    
     Config = Modules.Config
     Ui = Modules.Ui
     Hook = Modules.Hook
@@ -112,7 +112,7 @@ function Process:Init(Data)
     ReturnSpoofs = Modules.ReturnSpoofs
 end
 
---// Communication
+
 function Process:SetChannel(NewChannel: BindableEvent, IsWrapped: boolean)
     Channel = NewChannel
     WrappedChannel = IsWrapped
@@ -131,7 +131,7 @@ end
 function Process:CheckConfig(Config: table)
     local Name = identifyexecutor():lower()
 
-    --// Force configuration overwrites for specific executors
+    
     local Overwrites = self:GetConfigOverwrites(Name)
     if not Overwrites then return end
 
@@ -171,7 +171,7 @@ function Process:DeepCloneTable(Table, Ignore: table?, Visited: table?): table
     if typeof(Table) ~= "table" then return Table end
     local Cache = Visited or {}
 
-    --// Check for cached
+    
     if Cache[Table] then
         return Cache[Table]
     end
@@ -180,14 +180,14 @@ function Process:DeepCloneTable(Table, Ignore: table?, Visited: table?): table
     Cache[Table] = New
 
     for Key, Value in next, Table do
-        --// Check if the value is ignored
+        
         if Ignore and table.find(Ignore, Value) then continue end
         
         Key = self:CheckValue(Key, Ignore, Cache)
         New[Key] = self:CheckValue(Value, Ignore, Cache)
     end
 
-    --// Master clear
+    
     if not Visited then
         table.clear(Cache)
     end
@@ -219,7 +219,7 @@ function Process:CheckExecutor(): boolean
     local Name = identifyexecutor():lower()
     local IsBlacklisted = table.find(Blacklisted, Name)
 
-    --// Some executors have broken functionality
+    
     if IsBlacklisted then
         Ui:ShowUnsupportedExecutor(Name)
         return false
@@ -236,12 +236,12 @@ function Process:CheckFunctions(): boolean
         "setreadonly"
     }
 
-    --// Check if the functions exist in the ENV
+    
     for _, Name in CoreFunctions do
         local Func = self:FuncExists(Name)
         if Func then continue end
 
-        --// Function missing!
+        
         Ui:ShowUnsupported(Name)
         return false
     end
@@ -250,13 +250,13 @@ function Process:CheckFunctions(): boolean
 end
 
 function Process:CheckIsSupported(): boolean
-    --// Check if the executor is blacklisted
+    
     local ExecutorSupported = self:CheckExecutor()
     if not ExecutorSupported then
         return false
     end
 
-    --// Check if the core functions exist
+    
     local FunctionsSupported = self:CheckFunctions()
     if not FunctionsSupported then
         return false
@@ -282,18 +282,18 @@ end
 function Process:RemoteAllowed(Remote: Instance, TransferType: string, Method: string?): boolean?
     if typeof(Remote) ~= 'Instance' then return end
     
-    --// Check if the Remote is protected
+    
     if self:IsProtectedRemote(Remote) then return end
 
-    --// Fetch class table
+    
 	local ClassData = self:GetClassData(Remote)
 	if not ClassData then return end
 
-    --// Check if the transfer type has data
+    
 	local Allowed = ClassData[TransferType]
 	if not Allowed then return end
 
-    --// Check if the method is allowed
+    
 	if Method then
 		return table.find(Allowed, Method) ~= nil
 	end
@@ -314,7 +314,7 @@ function Process:GetRemoteSpoof(Remote: Instance, Method: string, ...): table?
 
     local ReturnValues = Spoof.Return
 
-    --// Call the ReturnValues function type
+    
     if typeof(ReturnValues) == "function" then
         ReturnValues = ReturnValues(...)
     end
@@ -384,12 +384,12 @@ function Process:Decompile(Script: LocalScript | ModuleScript): string
 
     local BytecodeOk, Bytecode = pcall(getscriptbytecode, Script)
     if not BytecodeOk then
-        return "--[[ Gagal mendapatkan bytecode skrip:\n" .. tostring(Bytecode) .. "\n]]"
+        return ""
     end
 
     local HttpFunc = request or syn and syn.request or http_request
     if not HttpFunc then
-        return "--[[ Decompile gagal: executor tidak mendukung 'request()' untuk API fallback. ]]"
+        return ""
     end
 
     local Ok, Response = pcall(HttpFunc, {
@@ -400,10 +400,10 @@ function Process:Decompile(Script: LocalScript | ModuleScript): string
     })
 
     if not Ok then
-        return "--[[ API decompile tidak dapat dihubungi: " .. tostring(Response) .. " ]]"
+        return ""
     end
     if Response.StatusCode ~= 200 then
-        return "--[[ API error " .. tostring(Response.StatusCode) .. ":\n" .. tostring(Response.Body) .. "\n]]"
+        return ""
     end
 
     return Response.Body
@@ -415,7 +415,7 @@ function Process:GetScriptFromFunc(Func: (...any) -> ...any)
     local Success, ENV = pcall(getfenv, Func)
     if not Success then return end
     
-    --// Blacklist 666's spy
+    
     if self:Is666SpyENV(ENV) then return end
 
     return rawget(ENV, "script")
@@ -431,7 +431,7 @@ function Process:ConnectionIsValid(Connection: table): boolean
 		end
 	}
 
-    --// Check if these properties are valid
+    
     local ToCheck = {
         "Script"
     }
@@ -439,12 +439,12 @@ function Process:ConnectionIsValid(Connection: table): boolean
         local Replacement = ValueReplacements[Property]
         local Value
 
-        --// Check if there's a function for a property
+        
         if Replacement then
             Value = Replacement(Connection)
         end
 
-        --// Check if the property has a value
+        
         if Value == nil then 
             return false 
         end
@@ -456,7 +456,7 @@ end
 function Process:FilterConnections(Signal: RBXScriptSignal): table
     local Processed = {}
 
-    --// Filter each connection
+    
     for _, Connection in getconnections(Signal) do
         if not self:ConnectionIsValid(Connection) then continue end
         table.insert(Processed, Connection)
@@ -472,11 +472,11 @@ end
 function Process:GetRemoteData(Id: string)
     local RemoteOptions = self.RemoteOptions
 
-    --// Check for existing remote data
+    
 	local Existing = RemoteOptions[Id]
 	if Existing then return Existing end
 	
-    --// Base remote data
+    
 	local Data = {
 		Excluded = false,
 		Blocked = false
@@ -549,15 +549,15 @@ local ProcessCallback = newcclosure(function(Data: RemoteData, Remote, ...): tab
 end)
 
 function Process:ProcessRemote(Data: RemoteData, Remote, ...): table?
-    --// Unpack Data
+    
 	local Method = Data.Method
     local TransferType = Data.TransferType
     local IsReceive = Data.IsReceive
 
-	--// Check if the transfertype method is allowed
+	
 	if TransferType and not self:RemoteAllowed(Remote, TransferType, Method) then return end
 
-    --// Fetch details
+    
     local Id = Communication:GetDebugId(Remote)
     local ClassData = self:GetClassData(Remote)
     local Timestamp = tick()
@@ -565,13 +565,13 @@ function Process:ProcessRemote(Data: RemoteData, Remote, ...): table?
     local CallingFunction
     local SourceScript
 
-    --// Add extra data into the log if needed
+    
     local ExtraData = self.ExtraData
     if ExtraData then
         self:Merge(Data, ExtraData)
     end
 
-    --// Get caller information
+    
     if not IsReceive then
         CallingFunction = self:FindCallingLClosure(6)
         SourceScript = CallingFunction and self:GetScriptFromFunc(CallingFunction) or nil
@@ -591,11 +591,11 @@ function Process:ProcessRemote(Data: RemoteData, Remote, ...): table?
         Args = {...}
     })
 
-    --// Invoke the Remote and log return values
+    
     local ReturnValues = ProcessCallback(Data, Remote, ...)
     Data.ReturnValues = ReturnValues
 
-    --// Queue log
+    
     Communication:QueueLog(Data)
 
     return self:Unpack(ReturnValues)
@@ -608,8 +608,8 @@ function Process:SetAllRemoteData(Key: string, Value)
 	end
 end
 
---// The communication creates a different table address
---// Recived tables will not be the same
+
+
 function Process:SetRemoteData(Id: string, RemoteData: table)
     local RemoteOptions = self.RemoteOptions
     RemoteOptions[Id] = RemoteData

@@ -1,6 +1,6 @@
---// Product identity, the single source of truth for the name, version and credits
+
 return {
-	Name = "RemoteSpy",
+	Name = "666's spy",
 	Version = "v26.07.29",
 	Author = "@nevskiydev (telegram), @vladislavvc (telegram)",
 	AuthorFull = "@depso (depthso)",

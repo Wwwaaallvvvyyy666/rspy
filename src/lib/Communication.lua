@@ -2,7 +2,7 @@ type table = {
     [any]: any
 }
 
---// Module
+
 local Module = {
     CommCallbacks = {}
 }
@@ -10,14 +10,14 @@ local Module = {
 local CommWrapper = {}
 CommWrapper.__index = CommWrapper
 
---// Serializer cache
+
 local SerializeCache = setmetatable({}, {__mode = "k"})
 local DeserializeCache = setmetatable({}, {__mode = "k"})
 
---// Services
+
 local CoreGui
 
---// Modules
+
 local Hook
 local Channel
 local Config
@@ -69,7 +69,7 @@ function Module:NewCommWrap(Channel: BindableEvent)
         Event = Channel.Event
     }
 
-    --// Create new wrapper class
+    
     local Wrapped = setmetatable(Base, CommWrapper)
     Wrapped:BeginQueueService()
 
@@ -77,7 +77,7 @@ function Module:NewCommWrap(Channel: BindableEvent)
 end
 
 function Module:MakeDebugIdHandler(): BindableFunction
-    --// Using BindableFunction as it does not require a thread permission change
+    
     local Remote = Instance.new("BindableFunction")
     function Remote.OnInvoke(Object: Instance): string
         return Object:GetDebugId()
@@ -96,13 +96,13 @@ function Module:GetDebugId(Object: Instance): string
 end
 
 function Module:GetHiddenParent(): Instance
-    --// Use gethui if it exists
+    
     if gethui then return gethui() end
     return CoreGui
 end
 
 function Module:CreateCommChannel(): (number, BindableEvent)
-    --// Use native if it exists
+    
     local Force = Config and Config.ForceUseCustomComm or false
     if create_comm_channel and not Force then
         return create_comm_channel()
@@ -111,7 +111,7 @@ function Module:CreateCommChannel(): (number, BindableEvent)
     local Parent = self:GetHiddenParent()
     local ChannelId = math.random(1, 10000000)
 
-    --// BindableEvent
+    
     local Channel = Instance.new("BindableEvent", Parent)
     Channel.Name = ChannelId
 
@@ -119,7 +119,7 @@ function Module:CreateCommChannel(): (number, BindableEvent)
 end
 
 function Module:GetCommChannel(ChannelId: number): BindableEvent?
-    --// Use native if it exists
+    
     local Force = Config and Config.ForceUseCustomComm or false
     if get_comm_channel and not Force then
         local Channel = get_comm_channel(ChannelId)
@@ -129,23 +129,23 @@ function Module:GetCommChannel(ChannelId: number): BindableEvent?
     local Parent = self:GetHiddenParent()
     local Channel = Parent:FindFirstChild(ChannelId)
 
-    --// Wrap the channel (Prevents thread permission errors)
+    
     local Wrapped = self:NewCommWrap(Channel)
     return Wrapped, true
 end
 
 function Module:CheckValue(Value, Inbound: boolean?)
-     --// No serializing  needed
+     
     if typeof(Value) ~= "table" then 
         return Value 
     end
    
-    --// Deserialize
+    
     if Inbound then
         return self:DeserializeTable(Value)
     end
 
-    --// Serialize
+    
     return self:SerializeTable(Value)
 end
 
@@ -153,7 +153,7 @@ local Tick = 0
 function Module:WaitCheck()
     Tick += 1
     if Tick > 40 then
-        Tick = 0 -- I could use modulus here but the interger will be massive
+        Tick = 0 
         wait()
     end
 end
@@ -177,7 +177,7 @@ function Module:ReadPacket(Packet: table): (any, any)
 end
 
 function Module:SerializeTable(Table: table): table
-    --// Check cache for existing
+    
     local Cached = SerializeCache[Table]
     if Cached then return Cached end
 
@@ -193,7 +193,7 @@ function Module:SerializeTable(Table: table): table
 end
 
 function Module:DeserializeTable(Serialized: table): table
-    --// Check for cached
+    
     local Cached = DeserializeCache[Serialized]
     if Cached then return Cached end
 
@@ -242,7 +242,7 @@ function Module:ChannelIndex(Channel, Property: string)
         return Hook:Index(Channel, Property)
     end
 
-    --// Some executors return a UserData type
+    
     return Channel[Property]
 end
 
@@ -273,7 +273,7 @@ end
 function Module:CreateChannel(): number
     local ChannelID, Event = self:CreateCommChannel()
 
-    --// Connect GetCommCallback function
+    
     Event.Event:Connect(function(Type: string, ...)
         local Callback = self:GetCommCallback(Type)
         if Callback then

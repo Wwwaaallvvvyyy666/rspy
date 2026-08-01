@@ -13,14 +13,7 @@ type table = {
 
 local Module = {
     Flags = {
-        -- PreventRenaming = {
-        --     Value = false,
-        --     Label = "No renaming",
-        -- },
-        -- PreventParenting = {
-        --     Value = false,
-        --     Label = "No parenting",
-        -- },
+        
         NoComments = {
             Value = false,
             Label = "No comments",
@@ -29,7 +22,7 @@ local Module = {
             Value = false,
             Label = "Auto select newest",
         },
-        DecompilePopout = { -- Lovre SHUSH
+        DecompilePopout = { 
             Value = false,
             Label = "Pop-out decompiles",
         },
