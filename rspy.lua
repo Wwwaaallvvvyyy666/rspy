@@ -593,6 +593,8 @@ function Process:Init(Data)
     Hook = Modules.Hook
     Communication = Modules.Communication
     ReturnSpoofs = Modules.ReturnSpoofs
+
+    self:LoadConfigs()
 end
 
 
@@ -952,7 +954,7 @@ function Process:Is666SpyENV(Env: table): boolean
     return Env == SigmaENV
 end
 
-function Process:GetRemoteData(Id: string)
+function Process:GetRemoteData(Id: string, Remote: Instance?)
     local RemoteOptions = self.RemoteOptions
 
     
@@ -961,9 +963,23 @@ function Process:GetRemoteData(Id: string)
 	
     
 	local Data = {
-		Excluded = false,
-		Blocked = false
+		Blocked = false,
+		Ignored = false,
+		Excluded = false
 	}
+    
+    if Remote and self.PersistentConfig then
+        local Success, Path = pcall(function() return Remote:GetFullName() end)
+        if Success and Path then
+            local Saved = self.PersistentConfig[Path]
+            if Saved then
+                Data.Blocked = Saved.Blocked or false
+                Data.Ignored = Saved.Ignored or false
+                Data.Excluded = Saved.Excluded or false
+            end
+            Data.RemotePath = Path
+        end
+    end
 
 	RemoteOptions[Id] = Data
 	return Data
@@ -1006,7 +1022,7 @@ local ProcessCallback = newcclosure(function(Data: RemoteData, Remote, ...): tab
     local Id = Data.Id
     local Method = Data.Method
 
-    local RemoteData = Process:GetRemoteData(Id)
+    local RemoteData = Process:GetRemoteData(Id, Remote)
     if RemoteData.Blocked then return {} end
 
     local Args = {...}
@@ -1075,7 +1091,17 @@ function Process:ProcessRemote(Data: RemoteData, Remote, ...): table?
     })
 
     
-    local ReturnValues = ProcessCallback(Data, Remote, ...)
+    local Success, ReturnValues = pcall(ProcessCallback, Data, Remote, ...)
+    
+    if not Success then
+        Data.ReturnValues = { "Crash prevented: " .. tostring(ReturnValues) }
+        Communication:QueueLog(Data)
+        if Data.OriginalFunc then
+            return pcall(Data.OriginalFunc, Remote, ...)
+        end
+        return nil
+    end
+
     Data.ReturnValues = ReturnValues
 
     
@@ -1084,11 +1110,61 @@ function Process:ProcessRemote(Data: RemoteData, Remote, ...): table?
     return self:Unpack(ReturnValues)
 end
 
+function Process:LoadConfigs()
+    if not readfile or not isfile then return end
+    local Success, PlaceId = pcall(function() return game.PlaceId end)
+    if not Success or not PlaceId then return end
+    
+    local Path = "666spy_configs/" .. tostring(PlaceId) .. ".json"
+    if isfile(Path) then
+        local ReadSuccess, Decoded = pcall(function()
+            return HttpService:JSONDecode(readfile(Path))
+        end)
+        if ReadSuccess and type(Decoded) == "table" then
+            self.PersistentConfig = Decoded
+        end
+    end
+    self.PersistentConfig = self.PersistentConfig or {}
+end
+
+function Process:SaveConfigs()
+    if not writefile or not makefolder or not isfolder then return end
+    local Success, PlaceId = pcall(function() return game.PlaceId end)
+    if not Success or not PlaceId then return end
+    
+    local Folder = "666spy_configs"
+    local Path = Folder .. "/" .. tostring(PlaceId) .. ".json"
+    
+    if not isfolder(Folder) then
+        pcall(makefolder, Folder)
+    end
+    
+    local ToSave = self.PersistentConfig or {}
+    for Id, Data in next, self.RemoteOptions do
+        if Data.RemotePath then
+            if Data.Blocked or Data.Ignored or Data.Excluded then
+                ToSave[Data.RemotePath] = {
+                    Blocked = Data.Blocked,
+                    Ignored = Data.Ignored,
+                    Excluded = Data.Excluded
+                }
+            else
+                ToSave[Data.RemotePath] = nil
+            end
+        end
+    end
+    self.PersistentConfig = ToSave
+    pcall(function()
+        writefile(Path, HttpService:JSONEncode(ToSave))
+    end)
+end
+
 function Process:SetAllRemoteData(Key: string, Value)
     local RemoteOptions = self.RemoteOptions
 	for RemoteID, Data in next, RemoteOptions do
 		Data[Key] = Value
 	end
+    self:SaveConfigs()
 end
 
 
@@ -1096,14 +1172,17 @@ end
 function Process:SetRemoteData(Id: string, RemoteData: table)
     local RemoteOptions = self.RemoteOptions
     RemoteOptions[Id] = RemoteData
+    self:SaveConfigs()
 end
 
 function Process:UpdateRemoteData(Id: string, RemoteData: table)
     Communication:Communicate("RemoteData", Id, RemoteData)
+    self:SaveConfigs()
 end
 
 function Process:UpdateAllRemoteData(Key: string, Value)
     Communication:Communicate("AllRemoteData", Key, Value)
+    self:SaveConfigs()
 end
 
 return Process
@@ -1666,8 +1745,8 @@ local Ui = {
         December = "🎄 %s 🎁"
     },
 	Scales = {
-		["Mobile"] = UDim2.fromOffset(420, 280),
-		["Desktop"] = UDim2.fromOffset(550, 380),
+		["Mobile"] = UDim2.fromScale(0.65, 0.55),
+		["Desktop"] = UDim2.fromScale(0.45, 0.45),
 	},
     BaseConfig = {
         Theme = "RemoteSpy",
@@ -1822,6 +1901,7 @@ function Ui:CheckScale()
 	local Device = IsMobile and "Mobile" or "Desktop"
 
 	BaseConfig.Size = Scales[Device]
+    self.LogLimit = IsMobile and 50 or 150
 end
 
 function Ui:SetClipboard(Content: string)
@@ -2580,7 +2660,7 @@ function Ui:SetFocusedRemote(Data)
 	local NoVariables = Flags:GetFlagValue("NoVariables")
 
 	
-	local RemoteData = Process:GetRemoteData(Id)
+	local RemoteData = Process:GetRemoteData(Id, Data.Remote)
 	local IsRemoteFunction = ClassData.IsRemoteFunction
 	local RemoteName = self:FilterName(`{Remote}`, 50)
 
@@ -3033,7 +3113,7 @@ function Ui:CreateLog(Data: Log)
 	local IsExploit = Data.IsExploit
 	
 	local IsNilParent = Hook:Index(Remote, "Parent") == nil
-	local RemoteData = Process:GetRemoteData(Id)
+	local RemoteData = Process:GetRemoteData(Id, Data.Remote)
 
 	
 	local Paused = Flags:GetFlagValue("Paused")

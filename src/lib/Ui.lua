@@ -16,8 +16,8 @@ local Ui = {
         December = "🎄 %s 🎁"
     },
 	Scales = {
-		["Mobile"] = UDim2.fromOffset(420, 280),
-		["Desktop"] = UDim2.fromOffset(550, 380),
+		["Mobile"] = UDim2.fromScale(0.65, 0.55),
+		["Desktop"] = UDim2.fromScale(0.45, 0.45),
 	},
     BaseConfig = {
         Theme = "RemoteSpy",
@@ -172,6 +172,7 @@ function Ui:CheckScale()
 	local Device = IsMobile and "Mobile" or "Desktop"
 
 	BaseConfig.Size = Scales[Device]
+    self.LogLimit = IsMobile and 50 or 150
 end
 
 function Ui:SetClipboard(Content: string)
@@ -930,7 +931,7 @@ function Ui:SetFocusedRemote(Data)
 	local NoVariables = Flags:GetFlagValue("NoVariables")
 
 	
-	local RemoteData = Process:GetRemoteData(Id)
+	local RemoteData = Process:GetRemoteData(Id, Data.Remote)
 	local IsRemoteFunction = ClassData.IsRemoteFunction
 	local RemoteName = self:FilterName(`{Remote}`, 50)
 
@@ -1383,7 +1384,7 @@ function Ui:CreateLog(Data: Log)
 	local IsExploit = Data.IsExploit
 	
 	local IsNilParent = Hook:Index(Remote, "Parent") == nil
-	local RemoteData = Process:GetRemoteData(Id)
+	local RemoteData = Process:GetRemoteData(Id, Data.Remote)
 
 	
 	local Paused = Flags:GetFlagValue("Paused")
