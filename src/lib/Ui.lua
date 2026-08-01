@@ -16,7 +16,7 @@ local Ui = {
         December = "🎄 %s 🎁"
     },
 	Scales = {
-		["Mobile"] = UDim2.fromScale(0.65, 0.55),
+		["Mobile"] = UDim2.fromScale(0.45, 0.4),
 		["Desktop"] = UDim2.fromScale(0.45, 0.45),
 	},
     BaseConfig = {
