@@ -8283,10 +8283,18 @@ function p:AddDefaultTitleButtons()
         }
     })
     
-    self.CloseButton = {}
-    self.Toggle = {
-        Icon = Instance.new("ImageLabel")
-    }
+    self.CloseButton = setmetatable({}, {
+        __newindex = function(t, k, v)
+            if k == "Visible" then CloseBtn.Visible = v end
+            rawset(t, k, v)
+        end
+    })
+    self.Toggle = setmetatable({ Icon = Instance.new("ImageLabel") }, {
+        __newindex = function(t, k, v)
+            if k == "Visible" then MinBtn.Visible = v end
+            rawset(t, k, v)
+        end
+    })
 
     self:TagElements{
         [self.TitleLabel] = 'WindowTitle'
