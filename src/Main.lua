@@ -1,4 +1,4 @@
-
+--// Product identity
 local Info = (function()
 	--INSERT: @lib/Info.lua
 end)()
@@ -52,7 +52,7 @@ if typeof(Overwrites) == "table" then
 	end
 end
 
-
+--// Service handler
 local Services = setmetatable({}, {
 	__index = function(self, Name: string): Instance
 		local Service = game:GetService(Name)
@@ -60,10 +60,10 @@ local Services = setmetatable({}, {
 	end,
 })
 
-
+--// Files module
 StartupLog("initializing file system")
 local Files = (function()
-	
+	--INSERT: @lib/Files.lua
 end)()
 Files:PushConfig(Configuration)
 Files:Init({
@@ -74,13 +74,13 @@ StartupLog("initialized file system")
 
 local Folder = Files.FolderName
 local Scripts = {
-	
+	--// User configurations
 	Config = Files:GetModule(`{Folder}/Config`, "Config"),
 	ReturnSpoofs = Files:GetModule(`{Folder}/Return spoofs`, "Return Spoofs"),
 	Configuration = Configuration,
 	Files = Files,
 
-	
+	--// Libraries
 	Info = {"base64", "COMPILE: @lib/Info.lua"},
 	Process = {"base64", "COMPILE: @lib/Process.lua"},
 	Hook = {"base64", "COMPILE: @lib/Hook.lua"},

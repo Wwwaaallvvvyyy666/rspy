@@ -1,6 +1,6 @@
 --[[
 
-	@description RemoteSpy - v26.07.29
+	@description 666's spy - v26.07.29
 	@author @nevskiydev (telegram), @vladislavvc (telegram)
 	@base_author @depso (depthso),
 	@repo https://github.com/Wwwaaallvvvyyy666/remotespy
@@ -14,9 +14,9 @@
 
 --// Product identity
 local Info = (function()
-	--// Product identity, the single source of truth for the name, version and credits
+	
 return {
-	Name = "RemoteSpy",
+	Name = "666's spy",
 	Version = "v26.07.29",
 	Author = "@nevskiydev (telegram), @vladislavvc (telegram)",
 	AuthorFull = "@depso (depthso)",
@@ -89,7 +89,7 @@ local Files = (function()
 	[any]: any
 }
 
---// Module
+
 local Files = {
 	UseWorkspace = false,
 	FolderName = nil,
@@ -99,14 +99,14 @@ local Files = {
 	}
 }
 
---// Services
+
 local HttpService: HttpService
 
---// Product identity, supplied by Main
+
 local Info
 
 local function StartupLog(Message: string)
-	-- print(`[{Info.Name}] [startup] {Message}`)
+	
 end
 
 function Files:Init(Data)
@@ -115,7 +115,7 @@ function Files:Init(Data)
     HttpService = Services.HttpService
 	Info = Data.Info
 
-	--// Check if the folders need to be created
+	
 	self:CheckFolders()
 end
 
@@ -126,16 +126,16 @@ function Files:PushConfig(Config: table)
 end
 
 function Files:UrlFetch(Url: string): string
-	--// Request data
+	
     local Final = {
         Url = Url:gsub(" ", "%%20"), 
         Method = 'GET'
     }
 
-	 --// Send HTTP request
+	 
     local Success, Responce = pcall(request, Final)
 
-    --// Error check
+    
     if not Success then 
         warn("[!] HTTP request error! Check console (F9)")
         warn("> Url:", Url)
@@ -146,7 +146,7 @@ function Files:UrlFetch(Url: string): string
     local Body = Responce.Body
     local StatusCode = Responce.StatusCode
 
-	--// Status code check
+	
     if StatusCode == 404 then
         warn("[!] The file requested has moved or been deleted.")
         warn(" >", Url)
@@ -165,11 +165,11 @@ function Files:LoadCustomasset(Path: string): string?
 	if not getcustomasset then return end
 	if not Path then return end
 
-	--// Check content
+	
 	local Content = readfile(Path)
 	if #Content <= 0 then return end
 
-	--// Load custom AssetId
+	
 	local Success, AssetId = pcall(getcustomasset, Path)
 	
 	if not Success then return end
@@ -185,17 +185,17 @@ function Files:GetFile(Path: string, CustomAsset: boolean?): string?
 	local LocalPath = self:MakePath(Path)
 	local Content = ""
 
-	--// Check if the files should be fetched from the workspace instead
+	
 	if UseWorkspace then
 		Content = readfile(LocalPath)
 	else
-		--// Download with a HTTP request
+		
 		Content = self:UrlFetch(`{RepoUrl}/{Path}`)
 	end
 
-	--// Custom asset
+	
 	if CustomAsset then
-		--// Check if the file should be written to
+		
 		self:FileCheck(LocalPath, function()
 			return Content
 		end)
@@ -213,7 +213,7 @@ end
 function Files:FileCheck(Path: string, Callback)
 	if isfile(Path) then return end
 
-	--// Create and write the template to the missing file
+	
 	local Template = Callback()
 	writefile(Path, Template)
 end
@@ -245,11 +245,11 @@ end
 function Files:GetModule(Name: string, TemplateName: string): string
 	local Path = `{Name}.lua`
 
-	--// The file will be declared local if the template argument is provided
+	
 	if TemplateName then
 		self:TemplateCheck(Path, TemplateName)
 
-		--// Check if it successfuly loads
+		
 		local Content = readfile(Path)
 		local Success = loadstring(Content)
 		if Success then return Content end
@@ -264,23 +264,23 @@ function Files:LoadLibraries(Scripts: table, ...): table
 	local Modules = {}
 	for Name, Content in next, Scripts do
 		StartupLog(`loading library: {Name}`)
-		--// Base64 format
+		
 		local IsBase64 = typeof(Content) == "table" and Content[1] == "base64"
 		Content = IsBase64 and Content[2] or Content
 
-		--// Tables
+		
 		if typeof(Content) ~= "string" and not IsBase64 then 
 			Modules[Name] = Content
 			continue 
 		end
 
-		--// Decode Base64
+		
 		if IsBase64 then
 			Content = crypt.base64decode(Content)
 			Scripts[Name] = Content
 		end
 
-		--// Compile library 
+		
 		local Closure, Error = loadstring(Content, Name)
 		assert(Closure, `Failed to load {Name}: {Error}`)
 
@@ -295,7 +295,7 @@ function Files:LoadModules(Modules: {}, Data: {})
         local Init = Module.Init
         if not Init then continue end
 
-		--// Invoke :Init function 
+		
 		StartupLog(`initializing module: {Name}`)
         Module:Init(Data)
 		StartupLog(`initialized module: {Name}`)
@@ -305,7 +305,7 @@ end
 function Files:CreateFont(Name: string, AssetId: string): string?
 	if not AssetId then return end
 
-	--// Custom font Json
+	
 	local FileName = `assets/{Name}.json`
 	local JsonPath = self:MakePath(FileName)
 	local Data = {
@@ -473,9 +473,9 @@ local Scripts = {
 
 	--// Libraries
 	Info = [==[
---// Product identity, the single source of truth for the name, version and credits
+
 return {
-	Name = "RemoteSpy",
+	Name = "666's spy",
 	Version = "v26.07.29",
 	Author = "@nevskiydev (telegram), @vladislavvc (telegram)",
 	AuthorFull = "@depso (depthso)",
@@ -560,17 +560,17 @@ local Process = {
     }
 }
 
---// Modules
+
 local Hook
 local Communication
 local ReturnSpoofs
 local Ui
 local Config
 
---// Services
+
 local HttpService: HttpService
 
---// Communication channel
+
 local Channel
 local WrappedChannel = false
 
@@ -587,10 +587,10 @@ function Process:Init(Data)
     local Modules = Data.Modules
     local Services = Data.Services
 
-    --// Services
+    
     HttpService = Services.HttpService
 
-    --// Modules
+    
     Config = Modules.Config
     Ui = Modules.Ui
     Hook = Modules.Hook
@@ -598,7 +598,7 @@ function Process:Init(Data)
     ReturnSpoofs = Modules.ReturnSpoofs
 end
 
---// Communication
+
 function Process:SetChannel(NewChannel: BindableEvent, IsWrapped: boolean)
     Channel = NewChannel
     WrappedChannel = IsWrapped
@@ -617,7 +617,7 @@ end
 function Process:CheckConfig(Config: table)
     local Name = identifyexecutor():lower()
 
-    --// Force configuration overwrites for specific executors
+    
     local Overwrites = self:GetConfigOverwrites(Name)
     if not Overwrites then return end
 
@@ -657,7 +657,7 @@ function Process:DeepCloneTable(Table, Ignore: table?, Visited: table?): table
     if typeof(Table) ~= "table" then return Table end
     local Cache = Visited or {}
 
-    --// Check for cached
+    
     if Cache[Table] then
         return Cache[Table]
     end
@@ -666,14 +666,14 @@ function Process:DeepCloneTable(Table, Ignore: table?, Visited: table?): table
     Cache[Table] = New
 
     for Key, Value in next, Table do
-        --// Check if the value is ignored
+        
         if Ignore and table.find(Ignore, Value) then continue end
         
         Key = self:CheckValue(Key, Ignore, Cache)
         New[Key] = self:CheckValue(Value, Ignore, Cache)
     end
 
-    --// Master clear
+    
     if not Visited then
         table.clear(Cache)
     end
@@ -705,7 +705,7 @@ function Process:CheckExecutor(): boolean
     local Name = identifyexecutor():lower()
     local IsBlacklisted = table.find(Blacklisted, Name)
 
-    --// Some executors have broken functionality
+    
     if IsBlacklisted then
         Ui:ShowUnsupportedExecutor(Name)
         return false
@@ -722,12 +722,12 @@ function Process:CheckFunctions(): boolean
         "setreadonly"
     }
 
-    --// Check if the functions exist in the ENV
+    
     for _, Name in CoreFunctions do
         local Func = self:FuncExists(Name)
         if Func then continue end
 
-        --// Function missing!
+        
         Ui:ShowUnsupported(Name)
         return false
     end
@@ -736,13 +736,13 @@ function Process:CheckFunctions(): boolean
 end
 
 function Process:CheckIsSupported(): boolean
-    --// Check if the executor is blacklisted
+    
     local ExecutorSupported = self:CheckExecutor()
     if not ExecutorSupported then
         return false
     end
 
-    --// Check if the core functions exist
+    
     local FunctionsSupported = self:CheckFunctions()
     if not FunctionsSupported then
         return false
@@ -768,18 +768,18 @@ end
 function Process:RemoteAllowed(Remote: Instance, TransferType: string, Method: string?): boolean?
     if typeof(Remote) ~= 'Instance' then return end
     
-    --// Check if the Remote is protected
+    
     if self:IsProtectedRemote(Remote) then return end
 
-    --// Fetch class table
+    
 	local ClassData = self:GetClassData(Remote)
 	if not ClassData then return end
 
-    --// Check if the transfer type has data
+    
 	local Allowed = ClassData[TransferType]
 	if not Allowed then return end
 
-    --// Check if the method is allowed
+    
 	if Method then
 		return table.find(Allowed, Method) ~= nil
 	end
@@ -800,7 +800,7 @@ function Process:GetRemoteSpoof(Remote: Instance, Method: string, ...): table?
 
     local ReturnValues = Spoof.Return
 
-    --// Call the ReturnValues function type
+    
     if typeof(ReturnValues) == "function" then
         ReturnValues = ReturnValues(...)
     end
@@ -870,12 +870,12 @@ function Process:Decompile(Script: LocalScript | ModuleScript): string
 
     local BytecodeOk, Bytecode = pcall(getscriptbytecode, Script)
     if not BytecodeOk then
-        return "--[[ Gagal mendapatkan bytecode skrip:\n" .. tostring(Bytecode) .. "\n]]"
+        return ""
     end
 
     local HttpFunc = request or syn and syn.request or http_request
     if not HttpFunc then
-        return "--[[ Decompile gagal: executor tidak mendukung 'request()' untuk API fallback. ]]"
+        return ""
     end
 
     local Ok, Response = pcall(HttpFunc, {
@@ -886,10 +886,10 @@ function Process:Decompile(Script: LocalScript | ModuleScript): string
     })
 
     if not Ok then
-        return "--[[ API decompile tidak dapat dihubungi: " .. tostring(Response) .. " ]]"
+        return ""
     end
     if Response.StatusCode ~= 200 then
-        return "--[[ API error " .. tostring(Response.StatusCode) .. ":\n" .. tostring(Response.Body) .. "\n]]"
+        return ""
     end
 
     return Response.Body
@@ -901,7 +901,7 @@ function Process:GetScriptFromFunc(Func: (...any) -> ...any)
     local Success, ENV = pcall(getfenv, Func)
     if not Success then return end
     
-    --// Blacklist 666's spy
+    
     if self:Is666SpyENV(ENV) then return end
 
     return rawget(ENV, "script")
@@ -917,7 +917,7 @@ function Process:ConnectionIsValid(Connection: table): boolean
 		end
 	}
 
-    --// Check if these properties are valid
+    
     local ToCheck = {
         "Script"
     }
@@ -925,12 +925,12 @@ function Process:ConnectionIsValid(Connection: table): boolean
         local Replacement = ValueReplacements[Property]
         local Value
 
-        --// Check if there's a function for a property
+        
         if Replacement then
             Value = Replacement(Connection)
         end
 
-        --// Check if the property has a value
+        
         if Value == nil then 
             return false 
         end
@@ -942,7 +942,7 @@ end
 function Process:FilterConnections(Signal: RBXScriptSignal): table
     local Processed = {}
 
-    --// Filter each connection
+    
     for _, Connection in getconnections(Signal) do
         if not self:ConnectionIsValid(Connection) then continue end
         table.insert(Processed, Connection)
@@ -958,11 +958,11 @@ end
 function Process:GetRemoteData(Id: string)
     local RemoteOptions = self.RemoteOptions
 
-    --// Check for existing remote data
+    
 	local Existing = RemoteOptions[Id]
 	if Existing then return Existing end
 	
-    --// Base remote data
+    
 	local Data = {
 		Excluded = false,
 		Blocked = false
@@ -1035,15 +1035,15 @@ local ProcessCallback = newcclosure(function(Data: RemoteData, Remote, ...): tab
 end)
 
 function Process:ProcessRemote(Data: RemoteData, Remote, ...): table?
-    --// Unpack Data
+    
 	local Method = Data.Method
     local TransferType = Data.TransferType
     local IsReceive = Data.IsReceive
 
-	--// Check if the transfertype method is allowed
+	
 	if TransferType and not self:RemoteAllowed(Remote, TransferType, Method) then return end
 
-    --// Fetch details
+    
     local Id = Communication:GetDebugId(Remote)
     local ClassData = self:GetClassData(Remote)
     local Timestamp = tick()
@@ -1051,13 +1051,13 @@ function Process:ProcessRemote(Data: RemoteData, Remote, ...): table?
     local CallingFunction
     local SourceScript
 
-    --// Add extra data into the log if needed
+    
     local ExtraData = self.ExtraData
     if ExtraData then
         self:Merge(Data, ExtraData)
     end
 
-    --// Get caller information
+    
     if not IsReceive then
         CallingFunction = self:FindCallingLClosure(6)
         SourceScript = CallingFunction and self:GetScriptFromFunc(CallingFunction) or nil
@@ -1077,11 +1077,11 @@ function Process:ProcessRemote(Data: RemoteData, Remote, ...): table?
         Args = {...}
     })
 
-    --// Invoke the Remote and log return values
+    
     local ReturnValues = ProcessCallback(Data, Remote, ...)
     Data.ReturnValues = ReturnValues
 
-    --// Queue log
+    
     Communication:QueueLog(Data)
 
     return self:Unpack(ReturnValues)
@@ -1094,8 +1094,8 @@ function Process:SetAllRemoteData(Key: string, Value)
 	end
 end
 
---// The communication creates a different table address
---// Recived tables will not be the same
+
+
 function Process:SetRemoteData(Id: string, RemoteData: table)
     local RemoteOptions = self.RemoteOptions
     RemoteOptions[Id] = RemoteData
@@ -1112,12 +1112,7 @@ end
 return Process
 ]==],
 	Hook = [==[
---[[
 
-	Taking my methods 💖💖
-	I love a paster and a skid, puts disgust in my face
-
-]]
 
 local Hook = {
 	OriginalNamecall = nil,
@@ -1135,7 +1130,7 @@ type table = {
 type MetaFunc = (Instance, ...any) -> ...any
 type UnkFunc = (...any) -> ...any
 
---// Modules
+
 local Modules
 local Process
 local Configuration
@@ -1153,26 +1148,26 @@ function Hook:Init(Data)
 	Configuration = Modules.Configuration or Configuration
 end
 
---// The callback is expected to return a nil value sometimes which should be ingored
+
 local HookMiddle = newcclosure(function(OriginalFunc, Callback, AlwaysTable: boolean?, ...)
-	--// Invoke callback and check for a reponce otherwise ignored
+	
 	local ReturnValues = Callback(...)
 	if ReturnValues then
-		--// Unpack
+		
 		if not AlwaysTable then
 			return Process:Unpack(ReturnValues)
 		end
 
-		--// Return packed responce
+		
 		return ReturnValues
 	end
 
-	--// Return packed responce
+	
 	if AlwaysTable then
 		return {OriginalFunc(...)}
 	end
 
-	--// Unpacked
+	
 	return OriginalFunc(...)
 end)
 
@@ -1190,12 +1185,12 @@ function Hook:PushConfig(Overwrites)
     Merge(self, Overwrites)
 end
 
---// getrawmetatable
+
 function Hook:ReplaceMetaMethod(Object: Instance, Call: string, Callback: MetaFunc): MetaFunc
 	local Metatable = getrawmetatable(Object)
 	local OriginalFunc = clonefunction(Metatable[Call])
 	
-	--// Replace function
+	
 	setreadonly(Metatable, false)
 	Metatable[Call] = newcclosure(function(...)
 		return HookMiddle(OriginalFunc, Callback, false, ...)
@@ -1205,7 +1200,7 @@ function Hook:ReplaceMetaMethod(Object: Instance, Call: string, Callback: MetaFu
 	return OriginalFunc
 end
 
---// hookfunction
+
 function Hook:HookFunction(Func: UnkFunc, Callback: UnkFunc)
 	local OriginalFunc
 	local WrappedCallback = newcclosure(Callback)
@@ -1215,7 +1210,7 @@ function Hook:HookFunction(Func: UnkFunc, Callback: UnkFunc)
 	return OriginalFunc
 end
 
---// hookmetamethod
+
 function Hook:HookMetaCall(Object: Instance, Call: string, Callback: MetaFunc): MetaFunc
 	local Metatable = getrawmetatable(Object)
 	local Unhooked
@@ -1229,37 +1224,37 @@ end
 function Hook:HookMetaMethod(Object: Instance, Call: string, Callback: MetaFunc): MetaFunc
 	local Func = newcclosure(Callback)
 	
-	--// Getrawmetatable
+	
 	if Config and Config.ReplaceMetaCallFunc then
 		return self:ReplaceMetaMethod(Object, Call, Func)
 	end
 	
-	--// Hookmetamethod
+	
 	return self:HookMetaCall(Object, Call, Func)
 end
 
---// This includes a few patches for executor functions that result in detection
---// This isn't bulletproof since some functions like hookfunction I can't patch
---// By the way, thanks for copying this guys! Super appreciate the copycat
+
+
+
 function Hook:PatchFunctions()
-	--// Check if this function is disabled in the configuration
+	
 	if Config and Config.NoFunctionPatching then return end
 
 	local Patches = {
-		--// Error detection patch
-		--// hookfunction may still be detected depending on the executor
+		
+		
 		[pcall] =  function(OldFunc, Func, ...)
 			local Responce = {OldFunc(Func, ...)}
 			local Success, Error = Responce[1], Responce[2]
 			local IsC = iscclosure(Func)
 
-			--// Patch c-closure error detection
+			
 			if Success == false and IsC then
 				local NewError = Process:CleanCError(Error)
 				Responce[2] = NewError
 			end
 
-			--// Stack-overflow detection patch
+			
 			if Success == false and not IsC and Error:find("C stack overflow") then
 				local Tracetable = Error:split(":")
 				local Caller, Line = Tracetable[1], Tracetable[2]
@@ -1276,7 +1271,7 @@ function Hook:PatchFunctions()
 		[getfenv] = function(OldFunc, Level: number, ...)
 			Level = Level or 1
 
-			--// Prevent catpure of executor's env
+			
 			if type(Level) == "number" then
 				Level += 2
 			end
@@ -1284,7 +1279,7 @@ function Hook:PatchFunctions()
 			local Responce = {OldFunc(Level, ...)}
 			local ENV = Responce[1]
 
-			--// __tostring ENV detection patch
+			
 			if not checkcaller() and ENV == ExeENV then
 				Communication:ConsolePrint("ENV escape patched")
 				return OldFunc(999999, ...)
@@ -1294,14 +1289,14 @@ function Hook:PatchFunctions()
 		end
 	}
 
-	--// Hook each function
+	
 	for Func, CallBack in Patches do
 		local Wrapped = newcclosure(CallBack)
 		local OldFunc; OldFunc = self:HookFunction(Func, function(...)
 			return Wrapped(OldFunc, ...)
 		end)
 
-		--// Cache previous function
+		
 		self.PreviousFunctions[Func] = OldFunc
 	end
 end
@@ -1336,15 +1331,15 @@ function Hook:HookRemoteTypeIndex(ClassName: string, FuncName: string)
 	local Func = Remote[FuncName]
 	local OriginalFunc
 
-	--// Remotes will share the same functions
-	--// 	For example FireServer will be identical
-	--// Addionally, this is for __index calls.
-	--// 	A __namecall hook will not detect this
+	
+	
+	
+	
 	OriginalFunc = self:HookFunction(Func, function(self, ...)
-		--// Check if the Object is allowed 
+		
 		if not Process:RemoteAllowed(self, "Send", FuncName) then return end
 
-		--// Process the remote data
+		
 		return ProcessRemote(OriginalFunc, "__index", self, FuncName, ...)
 	end)
 end
@@ -1358,10 +1353,10 @@ function Hook:HookRemoteIndexes()
 end
 
 function Hook:BeginHooks()
-	--// Hook Remote functions
+	
 	self:HookRemoteIndexes()
 
-	--// Namecall hook
+	
 	local OriginalNameCall
 	OriginalNameCall = self:HookMetaMethod(game, "__namecall", function(self, ...)
 		local Method = getnamecallmethod()
@@ -1370,7 +1365,7 @@ function Hook:BeginHooks()
 
 	Merge(self, {
 		OriginalNamecall = OriginalNameCall,
-		--OriginalIndex = Oi
+		
 	})
 end
 
@@ -1379,17 +1374,17 @@ function Hook:HookClientInvoke(Remote, Method, Callback)
 		return getcallbackvalue(Remote, Method)
 	end)
 
-	--// Some executors like Potassium will throw a error if the Callback value is nil
+	
 	if not Success then return end
 	if not Function then return end
 	
-	--// Test hookfunction
+	
 	local HookSuccess = pcall(function()
 		self:HookFunction(Function, Callback)
 	end)
 	if HookSuccess then return end
 
-	--// Replace callback function otherwise
+	
 	Remote[Method] = function(...)
 		return HookMiddle(Function, Callback, false, ...)
 	end
@@ -1402,20 +1397,20 @@ function Hook:MultiConnect(Remotes)
 end
 
 function Hook:ConnectClientRecive(Remote)
-	--// Check if the Remote class is allowed for receiving
+	
 	local Allowed = Process:RemoteAllowed(Remote, "Receive")
 	if not Allowed then return end
 
-	--// Check if the Object has Remote class data
+	
     local ClassData = Process:GetClassData(Remote)
     local IsRemoteFunction = ClassData.IsRemoteFunction
 	local NoReciveHook = ClassData.NoReciveHook
     local Method = ClassData.Receive[1]
 
-	--// Check if the Recive should be hooked
+	
 	if NoReciveHook then return end
 
-	--// New callback function
+	
 	local function Callback(...)
         return Process:ProcessRemote({
             Method = Method,
@@ -1425,16 +1420,16 @@ function Hook:ConnectClientRecive(Remote)
         }, Remote, ...)
 	end
 
-	--// Connect remote
+	
 	if not IsRemoteFunction then
    		Remote[Method]:Connect(Callback)
-	else -- Remote functions
+	else 
 		self:HookClientInvoke(Remote, Method, Callback)
 	end
 end
 
 function Hook:BeginService(Libraries, ExtraData, ChannelId, ...)
-	--// Librareis
+	
 	local ReturnSpoofs = Libraries.ReturnSpoofs
 	local ProcessLib = Libraries.Process
 	local Communication = Libraries.Communication
@@ -1442,10 +1437,10 @@ function Hook:BeginService(Libraries, ExtraData, ChannelId, ...)
 	local Config = Libraries.Config
 	local Info = Libraries.Info
 
-	--// Check for configuration overwrites
+	
 	ProcessLib:CheckConfig(Config)
 
-	--// Init data
+	
 	local InitData = {
 		Modules = {
 			ReturnSpoofs = ReturnSpoofs,
@@ -1464,11 +1459,11 @@ function Hook:BeginService(Libraries, ExtraData, ChannelId, ...)
 		})
 	}
 
-	--// Init libraries
+	
 	Communication:Init(InitData)
 	ProcessLib:Init(InitData)
 
-	--// Communication configuration
+	
 	local Channel, IsWrapped = Communication:GetCommChannel(ChannelId)
 	Communication:SetChannel(Channel)
 	Communication:AddTypeCallbacks({
@@ -1491,11 +1486,11 @@ function Hook:BeginService(Libraries, ExtraData, ChannelId, ...)
 		end
 	})
 	
-	--// Process configuration
+	
 	ProcessLib:SetChannel(Channel, IsWrapped)
 	ProcessLib:SetExtraData(ExtraData)
 
-	--// Hook configuration
+	
 	self:Init(InitData)
 
 	if ExtraData and ExtraData.IsActor then
@@ -1504,12 +1499,12 @@ function Hook:BeginService(Libraries, ExtraData, ChannelId, ...)
 end
 
 function Hook:LoadMetaHooks(ActorCode: string, ChannelId: number)
-	--// Hook actors
+	
 	if not Configuration.NoActors then
 		self:RunOnActors(ActorCode, ChannelId)
 	end
 
-	--// Hook current thread
+	
 	self:BeginService(Modules, nil, ChannelId) 
 end
 
@@ -1519,15 +1514,15 @@ function Hook:LoadReceiveHooks()
 
 	if NoReceiveHooking then return end
 
-	--// Remote added
-	game.DescendantAdded:Connect(function(Remote) -- TODO
+	
+	game.DescendantAdded:Connect(function(Remote) 
 		self:ConnectClientRecive(Remote)
 	end)
 
-	--// Collect remotes with nil parents
+	
 	self:MultiConnect(getnilinstances())
 
-	--// Search for remotes
+	
 	for _, Service in next, game:GetChildren() do
 		if table.find(BlackListedServices, Service.ClassName) then continue end
 		self:MultiConnect(Service:GetDescendants())
@@ -1558,14 +1553,7 @@ type table = {
 
 local Module = {
     Flags = {
-        -- PreventRenaming = {
-        --     Value = false,
-        --     Label = "No renaming",
-        -- },
-        -- PreventParenting = {
-        --     Value = false,
-        --     Label = "No parenting",
-        -- },
+        
         NoComments = {
             Value = false,
             Label = "No comments",
@@ -1574,7 +1562,7 @@ local Module = {
             Value = false,
             Label = "Auto select newest",
         },
-        DecompilePopout = { -- Lovre SHUSH
+        DecompilePopout = { 
             Value = false,
             Label = "Pop-out decompiles",
         },
@@ -1730,17 +1718,17 @@ type Log = {
 	IsExploit: boolean
 }
 
---// Compatibility
+
 local SetClipboard = setclipboard or toclipboard or set_clipboard
 
---// Libraries
+
 local DefaultReGuiUrl = "https://raw.githubusercontent.com/Wwwaaallvvvyyy666/remotespy/main/Gui/gui.lua"
 local ReGui
 
 local Info
 
 local function StartupLog(Message: string)
-	-- print(`[{Info.Name}] [startup] {Message}`)
+	
 end
 
 local function RunWithTimeout(Timeout: number, Callback: () -> any): (boolean, any)
@@ -1786,7 +1774,7 @@ local function LoadRemoteModule(Name: string, Url: string): table
 	return Module
 end
 
---// Modules
+
 local Flags
 local Generation
 local Process
@@ -1806,7 +1794,7 @@ function Ui:Init(Data)
     local Modules = Data.Modules
 	local Configuration = Modules.Configuration
 
-	--// Modules
+	
 	Flags = Modules.Flags
 	Generation = Modules.Generation
 	Process = Modules.Process
@@ -1816,7 +1804,7 @@ function Ui:Init(Data)
 	Files = Modules.Files
 	Info = Modules.Info
 
-	self.DefaultEditorContent = `--[[\n\t{Info.Name} {Info.Version}\n\tOriginal Remote Spy by {Info.Author}\n\n\t{Info.Repo}\n]]`
+	self.DefaultEditorContent = ``
 
 	ReGui = Modules.ReGui or ReGui or LoadRemoteModule("ReGui", Configuration.ReGuiUrl or DefaultReGuiUrl)
 	ReGui.PrefabsId = Configuration.ReGuiPrefabsId or ReGui.PrefabsId
@@ -1854,11 +1842,11 @@ end
 function Ui:LoadFont()
 	local FontFile = self.FontJsonFile
 
-	--// Get FontFace AssetId
+	
 	local AssetId = Files:LoadCustomasset(FontFile)
 	if not AssetId then return end
 
-	--// Create custom FontFace
+	
 	local NewFont = Font.new(AssetId)
 	TextFont = NewFont
 	FontSuccess = true
@@ -1871,7 +1859,7 @@ end
 function Ui:FontWasSuccessful()
 	if FontSuccess then return end
 
-	--// Error message
+	
 	self:ShowModal({
 		"Unfortunately your executor was unable to download the font and therefore switched to the Dark theme",
 		"\nIf you would like to use the ImGui theme, \nplease download the font (assets/ProggyClean.ttf)",
@@ -1905,7 +1893,7 @@ function Ui:LoadReGui()
 		StartupLog("initialized ReGui")
 	end
 
-	--// ReGui
+	
 	ReGui:DefineTheme("RemoteSpy", ThemeConfig)
 end
 
@@ -1919,14 +1907,14 @@ function Ui:CreateButtons(Parent, Data: CreateButtons)
 	local Buttons = Data.Buttons
 	local NoTable = Data.NoTable
 
-	--// Create table layout
+	
 	if not NoTable then
 		Parent = Parent:Table({
 			MaxColumns = 3
 		}):NextRow()
 	end
 
-	--// Create buttons
+	
 	for _, Button in next, Buttons do
 		local Container = Parent
 		if not NoTable then
@@ -1943,7 +1931,7 @@ function Ui:CreateWindow(WindowConfig)
 	local Config = Process:DeepCloneTable(BaseConfig)
 	Process:Merge(Config, WindowConfig)
 
-	--// Create Window
+	
 	local Window = ReGui:Window(Config)
 
 	return Window
@@ -1958,7 +1946,7 @@ function Ui:AskUser(Config: AskConfig): string
 	local Window = self.Window
 	local Answered = false
 
-	--// Create modal
+	
 	local ModalWindow = Window:PopupModal({
 		Title = Config.Title
 	})
@@ -1968,7 +1956,7 @@ function Ui:AskUser(Config: AskConfig): string
 	})
 	ModalWindow:Separator()
 
-	--// Answers
+	
 	local Row = ModalWindow:Row({
 		Expanded = true
 	})
@@ -1990,10 +1978,10 @@ function Ui:CreateMainWindow()
 	local Window = self:CreateWindow()
 	self.Window = Window
 
-	--// Check if the font was successfully downloaded
+	
 	self:FontWasSuccessful()
 
-	--// UiVisible flag callback
+	
 	Flags:SetFlagCallback("UiVisible", function(self, Visible)
 		Window:SetVisible(Visible)
 	end)
@@ -2005,7 +1993,7 @@ function Ui:ShowModal(Lines: table)
 	local Window = self.Window
 	local Message = table.concat(Lines, "\n")
 
-	--// Modal Window
+	
 	local ModalWindow = Window:PopupModal({
 		Title = Info.Name
 	})
@@ -2040,7 +2028,7 @@ end
 function Ui:CreateOptionsForDict(Parent, Dict: table, Callback)
 	local Options = {}
 
-	--// Dictonary wrap
+	
 	for Key, Value in next, Dict do
 		Options[Key] = {
 			Value = Value,
@@ -2048,37 +2036,37 @@ function Ui:CreateOptionsForDict(Parent, Dict: table, Callback)
 			Callback = function(_, Value)
 				Dict[Key] = Value
 
-				--// Invoke callback
+				
 				if not Callback then return end
 				Callback()
 			end
 		}
 	end
 
-	--// Create elements
+	
 	self:CreateElements(Parent, Options)
 end
 
 function Ui:CheckKeybindLayout(Container, KeyCode: Enum.KeyCode, Callback)
 	if not KeyCode then return Container end
 
-	--// Create Row layout
+	
 	Container = Container:Row({
 		HorizontalFlex = Enum.UIFlexAlignment.SpaceBetween
 	})
 
-	--// Add Keybind element
+	
 	Container:Keybind({
 		Label = "",
 		Value = KeyCode,
 		LayoutOrder = 2,
 		IgnoreGameProcessed = false,
 		Callback = function()
-			--// Check if keybinds are enabled
+			
 			local Enabled = Flags:GetFlagValue("KeybindsEnabled")
 			if not Enabled then return end
 
-			--// Invoke callback
+			
 			Callback()
 		end,
 	})
@@ -2089,7 +2077,7 @@ end
 function Ui:CreateElements(Parent, Options)
 	local OptionTypes = self.OptionTypes
 	
-	--// Create table layout
+	
 	local Table = Parent:Table({
 		MaxColumns = 3
 	}):NextRow()
@@ -2098,32 +2086,32 @@ function Ui:CreateElements(Parent, Options)
 		local Value = Data.Value
 		local Type = typeof(Value)
 
-		--// Add missing values into options table
+		
 		ReGui:CheckConfig(Data, {
 			Class = OptionTypes[Type],
 			Label = Name,
 		})
 		
-		--// Check if a element type exists for value type
+		
 		local Class = Data.Class
 		assert(Class, `No {Type} type exists for option`)
 
 		local Container = Table:NextColumn()
 		local Checkbox = nil
 
-		--// Check for a keybind layout
+		
 		local Keybind = Data.Keybind
 		Container = self:CheckKeybindLayout(Container, Keybind, function()
 			Checkbox:Toggle()
 		end)
 		
-		--// Create column and element
+		
 		Checkbox = Container[Class](Container, Data)
 	end
 end
 
 function Ui:CreateWindowContent(Window)
-    --// Window group
+    
     local Layout = Window:List({
         UiPadding = 2,
         HorizontalFlex = Enum.UIFlexAlignment.Fill,
@@ -2132,7 +2120,7 @@ function Ui:CreateWindowContent(Window)
         Fill = true
     })
 
-	--// Remotes list
+	
     self.RemotesList = Layout:Canvas({
         Scroll = true,
         UiPadding = 5,
@@ -2141,7 +2129,7 @@ function Ui:CreateWindowContent(Window)
         Size = UDim2.new(0, 130, 1, 0)
     })
 
-	--// Tab box
+	
 	local InfoSelector = Layout:TabSelector({
         NoAnimation = true,
         Size = UDim2.new(1, -130, 0.4, 0),
@@ -2150,7 +2138,7 @@ function Ui:CreateWindowContent(Window)
 	self.InfoSelector = InfoSelector
 	self.CanvasLayout = Layout
 
-	--// Make tabs
+	
 	self:MakeEditorTab(InfoSelector)
 	self:MakeOptionsTab(InfoSelector)
 	
@@ -2186,15 +2174,15 @@ function Ui:ConsoleTab(InfoSelector)
 			local Text = Enabled and "Pause" or "Paused"
 			self.Text = Text
 
-			--// Update console
+			
 			Console.Enabled = Enabled
 		end,
 	})
 	ButtonsRow:Expand()
 
-	--// Create console
+	
 	Console = Tab:Console({
-		Text = `-- {Info.Name} {Info.Version} | original by {Info.Author}`,
+		Text = `
 		ReadOnly = true,
 		Border = false,
 		Fill = true,
@@ -2219,7 +2207,7 @@ function Ui:MakeOptionsTab(InfoSelector)
 		Name = "Options"
 	})
 
-	--// Add global options
+	
 	Tab:Separator({Text="Logs"})
 	self:CreateButtons(Tab, {
 		Base = {
@@ -2232,12 +2220,12 @@ function Ui:MakeOptionsTab(InfoSelector)
 				Callback = function()
 					local Tab = ActiveData and ActiveData.Tab or nil
 
-					--// Remove the Remote tab
+					
 					if Tab then
 						InfoSelector:RemoveTab(Tab)
 					end
 
-					--// Clear all log elements
+					
 					ActiveData = nil
 					self:ClearLogs()
 				end,
@@ -2279,7 +2267,7 @@ function Ui:MakeOptionsTab(InfoSelector)
 		}
 	})
 
-	--// Flag options
+	
 	Tab:Separator({Text="Settings"})
 	self:CreateElements(Tab, Flags:GetFlags())
 
@@ -2310,12 +2298,12 @@ function Ui:MakeEditorTab(InfoSelector)
 	local Default = self.DefaultEditorContent
 	local SyntaxColors = Config and Config.SyntaxColors or {}
 
-	--// Create tab
+	
 	local EditorTab = InfoSelector:CreateTab({
 		Name = "Editor"
 	})
 
-	--// IDE
+	
 	local CodeEditor = EditorTab:CodeEditor({
 		Fill = true,
 		Editable = true,
@@ -2325,7 +2313,7 @@ function Ui:MakeEditorTab(InfoSelector)
 		Text = Default
 	})
 
-	--// Buttons
+	
 	local ButtonsRow = EditorTab:Row()
 	self:CreateButtons(ButtonsRow, {
 		NoTable = true,
@@ -2343,7 +2331,7 @@ function Ui:MakeEditorTab(InfoSelector)
 					local Script = CodeEditor:GetText()
 					local Func, Error = loadstring(Script, "RemoteSpy-USERSCRIPT")
 
-					--// Syntax check
+					
 					if not Func then
 						self:ShowModal({"Error running script!\n", Error})
 						return
@@ -2384,7 +2372,7 @@ function Ui:ShouldFocus(Tab): boolean
 	local InfoSelector = self.InfoSelector
 	local ActiveTab = InfoSelector.ActiveTab
 
-	--// If there is an empty tab
+	
 	if not ActiveTab then
 		return true
 	end
@@ -2406,7 +2394,7 @@ function Ui:MakeEditorPopoutWindow(Content: string, WindowConfig: table)
 		FontFace = TextFont
 	})
 
-	--// Default buttons
+	
 	table.insert(Buttons, {
 		Text = "Copy",
 		Callback = function()
@@ -2415,7 +2403,7 @@ function Ui:MakeEditorPopoutWindow(Content: string, WindowConfig: table)
 		end
 	})
 
-	--// Buttons
+	
 	local ButtonsRow = Window:Row()
 	self:CreateButtons(ButtonsRow, {
 		NoTable = true,
@@ -2430,12 +2418,12 @@ function Ui:EditFile(FilePath: string, InFolder: boolean, OnSaveFunc: ((table, s
 	local Folder = Files.FolderName
 	local CodeEditor, Window
 
-	--// Relative to the workspace folder
+	
 	if InFolder then
 		FilePath = `{Folder}/{FilePath}`
 	end
 
-	--// Get file content
+	
 	local Content = readfile(FilePath)
 	Content = Content:gsub("\r\n", "\n")
 	
@@ -2446,16 +2434,16 @@ function Ui:EditFile(FilePath: string, InFolder: boolean, OnSaveFunc: ((table, s
 				local Script = CodeEditor:GetText()
 				local Success, Error = loadstring(Script, "RemoteSpy-Editor")
 
-				--// Syntax check
+				
 				if not Success then
 					self:ShowModal({"Error saving file!\n", Error})
 					return
 				end
 				
-				--// Save contents
+				
 				writefile(FilePath, Script)
 
-				--// Invoke on save function
+				
 				if OnSaveFunc then
 					OnSaveFunc(Window, Script)
 				end
@@ -2463,7 +2451,7 @@ function Ui:EditFile(FilePath: string, InFolder: boolean, OnSaveFunc: ((table, s
 		}
 	}
 
-	--// Create Editor Window
+	
 	CodeEditor, Window = self:MakeEditorPopoutWindow(Content, {
 		Title = `Editing: {FilePath}`,
 		Buttons = Buttons
@@ -2480,7 +2468,7 @@ function Ui:MakeButtonMenu(Button: Instance, Unpack: table, Options: MenuOptions
 		MaxSizeX = 500,
 	})
 
-	--// Create Selectables for string, function
+	
 	for Name, Func in Options do
 		 Popup:Selectable({
 			Text = Name,
@@ -2492,24 +2480,24 @@ function Ui:MakeButtonMenu(Button: Instance, Unpack: table, Options: MenuOptions
 end
 
 function Ui:RemovePreviousTab(Title: string): boolean
-	--// No previous tabs
+	
 	if not ActiveData then 
 		return false 
 	end
 
-	--// TabSelector
+	
 	local InfoSelector = self.InfoSelector
 
-	--// Previous elements
+	
 	local PreviousTab = ActiveData.Tab
 	local PreviousSelectable = ActiveData.Selectable
 
-	--// Remove previous tab and set selectable focus
+	
 	local TabFocused = self:ShouldFocus(PreviousTab)
 	InfoSelector:RemoveTab(PreviousTab)
 	PreviousSelectable:SetSelected(false)
 
-	--// Create new tab
+	
 	return TabFocused
 end
 
@@ -2522,13 +2510,13 @@ function Ui:MakeTableHeaders(Table, Rows: table)
 end
 
 function Ui:Decompile(Editor: table, Script: Script)
-	local Header = "--Decompiling..."
-	Editor:SetText("--Decompiling...")
+	local Header = "
+	Editor:SetText("
 
-	--// Decompile script
+	
 	local Decompiled, IsError = Process:Decompile(Script)
 
-	--// Add header for successful decompilations
+	
 	if not IsError then
 		Decompiled = `{Header}\n{Decompiled}`
 	end
@@ -2543,7 +2531,7 @@ type DisplayTableConfig = {
 	Table: table
 }
 function Ui:DisplayTable(Parent, Config: DisplayTableConfig): table
-	--// Configuration
+	
 	local Rows = Config.Rows
 	local Flags = Config.Flags
 	local DataTable = Config.Table
@@ -2551,25 +2539,25 @@ function Ui:DisplayTable(Parent, Config: DisplayTableConfig): table
 
 	Flags.MaxColumns = #Rows
 
-	--// Create table
+	
 	local Table = Parent:Table(Flags)
 
-	--// Table headers
+	
 	self:MakeTableHeaders(Table, Rows)
 
-	--// Table layout
+	
 	for RowIndex, Name in ToDisplay do
 		local Row = Table:Row()
 		
-		--// Create Columns
+		
 		for Count, Catagory in Rows do
 			local Column = Row:NextColumn()
 			
-			--// Value text
+			
 			local Value = Catagory == "Name" and Name or DataTable[Name]
 			if not Value then continue end
 
-			--// Create filtered label
+			
 			local String = self:FilterName(`{Value}`, 150)
 			Column:Label({Text=String})
 		end
@@ -2579,7 +2567,7 @@ function Ui:DisplayTable(Parent, Config: DisplayTableConfig): table
 end
 
 function Ui:SetFocusedRemote(Data)
-	--// Unpack remote data
+	
 	local Remote = Data.Remote
 	local Method = Data.Method
 	local IsReceive = Data.IsReceive
@@ -2590,16 +2578,16 @@ function Ui:SetFocusedRemote(Data)
 	local Args = Data.Args
 	local Id = Data.Id
 
-	--// Flags
+	
 	local TableArgs = Flags:GetFlagValue("TableArgs")
 	local NoVariables = Flags:GetFlagValue("NoVariables")
 
-	--// Unpack info
+	
 	local RemoteData = Process:GetRemoteData(Id)
 	local IsRemoteFunction = ClassData.IsRemoteFunction
 	local RemoteName = self:FilterName(`{Remote}`, 50)
 
-	--// UI data
+	
 	local CodeEditor = self.CodeEditor
 	local ToDisplay = self.DisplayRemoteInfo
 	local InfoSelector = self.InfoSelector
@@ -2610,7 +2598,7 @@ function Ui:SetFocusedRemote(Data)
 		Focused = TabFocused
 	})
 
-	--// Create new parser
+	
 	local Module = Generation:NewParser({
 		NoVariables = NoVariables
 	})
@@ -2618,7 +2606,7 @@ function Ui:SetFocusedRemote(Data)
 	local Formatter = Module.Formatter
 	Formatter:SetValueSwaps(ValueSwaps)
 
-	--// Set this log to be selected
+	
 	ActiveData = Data
 	Data.Tab = Tab
 	Data.Selectable:SetSelected(true)
@@ -2634,7 +2622,7 @@ function Ui:SetFocusedRemote(Data)
 		end
 	end
 	local function ScriptCheck(Script, NoMissingCheck: boolean): boolean?
-		--// Reject client events
+		
 		if IsReceive then 
 			Ui:ShowModal({
 				"Recieves do not have a script because it's a Connection"
@@ -2642,7 +2630,7 @@ function Ui:SetFocusedRemote(Data)
 			return 
 		end
 
-		--// Check if script exists
+		
 		if not Script and not NoMissingCheck then 
 			Ui:ShowModal({"The Script has been destroyed by the game"})
 			return
@@ -2651,7 +2639,7 @@ function Ui:SetFocusedRemote(Data)
 		return true
 	end
 
-	--// Functions
+	
 	function Data:ScriptOptions(Button: GuiButton)
 		Ui:MakeButtonMenu(Button, {self}, {
 			["Caller Info"] = DataConnection("GenerateInfo"),
@@ -2677,17 +2665,17 @@ function Ui:SetFocusedRemote(Data)
 		Ui:ShowModal({"Saved script to", FilePath})
 	end
 	function Data:SaveBytecode()
-		--// Problem check
+		
 		if not ScriptCheck(Script, true) then return end
 
-		--// getscriptbytecode
+		
     	local Success, Bytecode = pcall(getscriptbytecode, Script)
 		if not Success then
 			Ui:ShowModal({"Failed to get Script bytecode"})
 			return
 		end
 
-		--// Save file
+		
 		local PathBase = `{Script} %s.txt`
 		local FilePath = Generation:TimeStampFile(PathBase)
 		writefile(FilePath, Bytecode)
@@ -2710,7 +2698,7 @@ function Ui:SetFocusedRemote(Data)
 	function Data:GetReturn()
 		local ReturnValues = self.ReturnValues
 
-		--// Error messages
+		
 		if not IsRemoteFunction then
 			Ui:ShowModal({"The Remote is not a Remote Function"})
 			return
@@ -2720,15 +2708,15 @@ function Ui:SetFocusedRemote(Data)
 			return
 		end
 
-		--// Generate script
+		
 		local Script = Generation:TableScript(Module, ReturnValues)
 		SetIDEText(Script, `Return Values for: {RemoteName}`)
 	end
 	function Data:GenerateInfo()
-		--// Problem check
+		
 		if not ScriptCheck(nil, true) then return end
 
-		--// Generate script
+		
 		local Script = Generation:AdvancedInfo(Module, self)
 		SetIDEText(Script, `Advanced Info for: {RemoteName}`)
 	end
@@ -2737,11 +2725,11 @@ function Ui:SetFocusedRemote(Data)
 		local ToDecompile = Data[WhichScript]
 		local Editor = CodeEditor
 
-		--// Problem check
+		
 		if not ScriptCheck(ToDecompile, true) then return end
 		local Task = Ui:FilterName(`Viewing: {ToDecompile}.lua`, 200)
 		
-		--// Automatically Pop-out the editor for decompiling if enabled
+		
 		if DecompilePopout then
 			Editor = Ui:MakeEditorPopoutWindow("", {
 				Title = Task
@@ -2751,12 +2739,12 @@ function Ui:SetFocusedRemote(Data)
 		Ui:Decompile(Editor, ToDecompile)
 	end
 	
-	--// RemoteOptions
+	
 	self:CreateOptionsForDict(Tab, RemoteData, function()
 		Process:UpdateRemoteData(Id, RemoteData)
 	end)
 
-	--// Instance options
+	
 	self:CreateButtons(Tab, {
 		Base = {
 			Size = UDim2.new(1, 0, 0, 20),
@@ -2809,7 +2797,7 @@ function Ui:SetFocusedRemote(Data)
 		}
 	})
 
-	--// Remote information table
+	
 	self:DisplayTable(Tab, {
 		Rows = {"Name", "Value"},
 		Table = Data,
@@ -2821,14 +2809,14 @@ function Ui:SetFocusedRemote(Data)
 		}
 	})
 	
-	--// Arguments table script
+	
 	if TableArgs then
 		local Parsed = Generation:TableScript(Module, Args)
 		SetIDEText(Parsed, `Arguments for {RemoteName}`)
 		return
 	end
 
-	--// Remote call script
+	
 	Data:MakeScript("Remote")
 end
 
@@ -2844,10 +2832,10 @@ function Ui:ViewConnections(RemoteName: string, Signal: RBXScriptConnection)
 		"Script"
 	}
 
-	--// Get Filtered connections
+	
 	local Connections = Process:FilterConnections(Signal, ToDisplay)
 
-	--// Table
+	
 	local Table = Window:Table({
 		Border = true,
 		RowBackground = true,
@@ -2874,7 +2862,7 @@ function Ui:ViewConnections(RemoteName: string, Signal: RBXScriptConnection)
 					Enabled = not Enabled
 					self.Text = Enabled and "Disable" or "Enable"
 
-					--// Enable or disable the connection
+					
 					if Enabled then
 						Connection:Enable()
 					else
@@ -2885,7 +2873,7 @@ function Ui:ViewConnections(RemoteName: string, Signal: RBXScriptConnection)
 		end
 	}
 
-	--// Make headers on the table
+	
 	self:MakeTableHeaders(Table, ToDisplay)
 
 	for _, Connection in Connections do
@@ -2898,17 +2886,17 @@ function Ui:ViewConnections(RemoteName: string, Signal: RBXScriptConnection)
 			local Value = Connection[Property]
 			local Callback = ButtonsForValues[Property]
 
-			--// Value label
+			
 			ColumnRow:Label({Text=`{Value}`})
 
-			--// Add buttons
+			
 			if Callback then
 				Callback(ColumnRow, Value, Connection)
 			end
 		end
 	end
 
-	--// Center Window
+	
 	Window:Center()
 end
 
@@ -2917,29 +2905,29 @@ function Ui:GetRemoteHeader(Data: Log)
 	local Logs = self.Logs
 	local RemotesList = self.RemotesList
 
-	--// Remote info
+	
 	local Id = Data.Id
 	local Remote = Data.Remote
 	local RemoteName = self:FilterName(`{Remote}`, 30)
 
-	--// NoTreeNodes
+	
 	local NoTreeNodes = Flags:GetFlagValue("NoTreeNodes")
 
-	--// Check for existing TreeNode
+	
 	local Existing = Logs[Id]
 	if Existing then return Existing end
 
-	--// Header data
+	
 	local HeaderData = {	
 		LogCount = 0,
 		Data = Data,
 		Entries = {}
 	}
 
-	--// Increment treenode count
+	
 	RemotesCount += 1
 
-	--// Create new treenode element
+	
 	if not NoTreeNodes then
 		HeaderData.TreeNode = RemotesList:TreeNode({
 			LayoutOrder = -1 * RemotesCount,
@@ -2951,17 +2939,17 @@ function Ui:GetRemoteHeader(Data: Log)
 		local Entries = self.Entries
 		if #Entries < LogLimit then return end
 			
-		--// Get and remove last element
+		
 		local Log = table.remove(Entries, 1)
 		Log.Selectable:Remove()
 	end
 
 	function HeaderData:LogAdded(Data)
-		--// Increment log count
+		
 		self.LogCount += 1
 		self:CheckLimit()
 
-		--// Add entry
+		
 		local Entries = self.Entries
 		table.insert(Entries, Data)
 		
@@ -2969,13 +2957,13 @@ function Ui:GetRemoteHeader(Data: Log)
 	end
 
 	function HeaderData:Remove()
-		--// Remove TreeNode
+		
 		local TreeNode = self.TreeNode
 		if TreeNode then
 			TreeNode:Remove()
 		end
 
-		--// Clear tables from memory
+		
 		Logs[Id] = nil
 		table.clear(HeaderData)
 	end
@@ -2988,11 +2976,11 @@ function Ui:ClearLogs()
 	local Logs = self.Logs
 	local RemotesList = self.RemotesList
 
-	--// Clear all elements
+	
 	RemotesCount = 0
 	RemotesList:ClearChildElements()
 
-	--// Clear logs from memory
+	
 	table.clear(Logs)
 end
 
@@ -3013,7 +3001,7 @@ function Ui:ProcessLogQueue()
 	local Queue = self.LogQueue
     if #Queue <= 0 then return end
 
-	--// Create a log element for each in the Queue
+	
     for Index, Data in next, Queue do
         self:CreateLog(Data)
         table.remove(Queue, Index)
@@ -3038,7 +3026,7 @@ function Ui:FilterName(Name: string, CharacterLimit: number?): string
 end
 
 function Ui:CreateLog(Data: Log)
-	--// Unpack log data
+	
     local Remote = Data.Remote
 	local Method = Data.Method
     local Args = Data.Args
@@ -3050,42 +3038,42 @@ function Ui:CreateLog(Data: Log)
 	local IsNilParent = Hook:Index(Remote, "Parent") == nil
 	local RemoteData = Process:GetRemoteData(Id)
 
-	--// Paused
+	
 	local Paused = Flags:GetFlagValue("Paused")
 	if Paused then return end
 
-	--// Check caller (Ignore exploit calls)
+	
 	local LogExploit = Flags:GetFlagValue("LogExploit")
 	if not LogExploit and IsExploit then return end
 
-	--// IgnoreNil
+	
 	local IgnoreNil = Flags:GetFlagValue("IgnoreNil")
 	if IgnoreNil and IsNilParent then return end
 
-    --// LogRecives check
+    
 	local LogRecives = Flags:GetFlagValue("LogRecives")
 	if not LogRecives and IsReceive then return end
 
 	local SelectNewest = Flags:GetFlagValue("SelectNewest")
 	local NoTreeNodes = Flags:GetFlagValue("NoTreeNodes")
 
-    --// Excluded check
+    
     if RemoteData.Excluded then return end
 
-	--// Deserialize arguments
+	
 	Args = Communication:DeserializeTable(Args)
 
-	--// Deep clone data
+	
 	local ClonedArgs = Process:DeepCloneTable(Args)
 	Data.Args = ClonedArgs
 	Data.ValueSwaps = Generation:MakeValueSwapsTable(Timestamp)
 
-	--// Generate log title
+	
 	local MethodColors = Config and Config.MethodColors or {}
 	local Color = MethodColors[Method:lower()]
 	local Text = NoTreeNodes and `{Remote} | {Method}` or Method
 
-	--// FindStringForName check
+	
 	local FindString = Flags:GetFlagValue("FindStringForName")
 	if FindString then
 		for _, Arg in next, ClonedArgs do
@@ -3097,7 +3085,7 @@ function Ui:CreateLog(Data: Log)
 		end
 	end
 
-	--// Fetch HeaderData by the RemoteID used for stacking
+	
 	local Header = self:GetRemoteHeader(Data)
 	local RemotesList = self.RemotesList
 
@@ -3105,13 +3093,13 @@ function Ui:CreateLog(Data: Log)
 	local TreeNode = Header.TreeNode 
 	local Parent = TreeNode or RemotesList
 
-	--// Increase log count - TreeNodes are in GetRemoteHeader function
+	
 	if NoTreeNodes then
 		RemotesCount += 1
 		LogCount = RemotesCount
 	end
 
-    --// Create focus button
+    
 	Data.HeaderData = Header
 	Data.Selectable = Parent:Selectable({
 		Text = Text,
@@ -3125,7 +3113,7 @@ function Ui:CreateLog(Data: Log)
 
 	Header:LogAdded(Data)
 
-	--// Auto select check
+	
 	local GroupSelected = ActiveData and ActiveData.HeaderData == Header
 	if SelectNewest and GroupSelected then
 		self:SetFocusedRemote(Data)
@@ -3151,10 +3139,10 @@ type RemoteData = {
 	NoVariables: boolean?
 }
 
---// Module
+
 local Generation = {
-	DumpBaseName = nil, -- Built in :Init from Info
-	Header = nil, -- Built in :Init from Info
+	DumpBaseName = nil, 
+	Header = nil, 
 	ScriptTemplates = {
 		["Remote"] = {
 			{"%RemoteCall%"}
@@ -3196,7 +3184,7 @@ local Generation = {
 	}
 }
 
---// Modules
+
 local Config
 local Hook
 local ParserModule
@@ -3215,16 +3203,16 @@ function Generation:Init(Data: table)
     local Modules = Data.Modules
 	local Configuration = Modules.Configuration
 
-	--// Modules
+	
 	Config = Modules.Config
 	Hook = Modules.Hook
 	Flags = Modules.Flags
 	Info = Modules.Info
 	ParserModule = Modules.Parser
 
-	--// Dump naming, derived from the product identity
+	
 	self.DumpBaseName = `{Info.Name:gsub(" ", "")}-Dump %s.lua`
-	self.Header = `-- Generated with {Info.Name} {Info.Version}\n`
+	self.Header = `
 end
 
 function Generation:MakePrintable(String: string): string
@@ -3242,7 +3230,7 @@ function Generation:WriteDump(Content: string): string
 	local DumpBaseName = self.DumpBaseName
 	local FilePath = self:TimeStampFile(DumpBaseName)
 
-	--// Write to file
+	
 	writefile(FilePath, Content)
 
 	return FilePath
@@ -3265,7 +3253,7 @@ function Generation:GetBase(Module): (string, boolean)
 
 	local Code = NoComments and "" or Header
 
-	--// Generate variables code
+	
 	local Variables = Module.Parser:MakeVariableCode({
 		"Services", "Remote", "Variables"
 	}, NoComments)
@@ -3286,7 +3274,7 @@ function Generation:GetSwaps()
 		Swaps[Object] = Data
 	end
 
-	--// Invoke GetSwaps function
+	
 	Func(Interface)
 
 	return Swaps
@@ -3309,10 +3297,10 @@ function Generation:NewParser(Extra: table?)
 		end,
 	}
 
-	--// Merge extra configuration
+	
 	Merge(Configuration, Extra)
 
-	--// Create new parser instance
+	
 	return ParserModule:New(Configuration)
 end
 
@@ -3350,7 +3338,7 @@ function Generation:CallRemoteScript(Data, Info: CallInfo): string
 
 	local IndentString = self:MakeIndent(Indent)
 
-	--// Parse arguments
+	
 	local ParsedArgs, ItemsCount, IsArray = Parser:ParseTableIntoString({
 		NoBrackets = true,
 		NoVariables = NoVariables,
@@ -3358,7 +3346,7 @@ function Generation:CallRemoteScript(Data, Info: CallInfo): string
 		Indent = Indent
 	})
 
-	--// Create table variable if not an array
+	
 	if not IsArray or NoVariables then
 		ParsedArgs = Variables:MakeVariable({
 			Value = ("{%s}"):format(ParsedArgs),
@@ -3368,31 +3356,31 @@ function Generation:CallRemoteScript(Data, Info: CallInfo): string
 		})
 	end
 
-	--// Wrap in a unpack if the table is a dict
+	
 	if ItemsCount > 0 and not IsArray then
 		ParsedArgs = `unpack({ParsedArgs}, 1, table.maxn({ParsedArgs}))`
 	end
 
-	--// Firesignal script for client recieves
+	
 	if IsReceive then
 		local Second = ItemsCount <= 0 and "" or `, {ParsedArgs}`
 		local Signal = `{RemoteVariable}.{Method}`
 
-		local Code = `-- This data was received from the server`
+		local Code = `
 		ParsedArgs = self:Indent(IndentString, Code)
 		Code ..= `\n{IndentString}firesignal({Signal}{Second})`
 		
 		return Code
 	end
 	
-	--// Remote invoke script
+	
 	return `{RemoteVariable}:{Method}({ParsedArgs})`
 end
 
---// Variables: %VariableName%
+
 function Generation:ApplyVariables(String: string, Variables: table, ...): string
 	for Variable, Value in Variables do
-		--// Invoke value function
+		
 		if typeof(Value) == "function" then
 			Value = Value(...)
 		end
@@ -3426,7 +3414,7 @@ function Generation:MakeCallCode(ScriptType: string, Data: ScriptData): string
 		local Out = ""
 
 		for Key, Value in next, Template do
-			--// MetaMethod check
+			
 			local IsMetaTypeOnly = table.find(MetaMethods, Key)
 			if IsMetaTypeOnly then
 				if Key == MetaMethod then
@@ -3436,15 +3424,15 @@ function Generation:MakeCallCode(ScriptType: string, Data: ScriptData): string
 				continue
 			end
 
-			--// Information
+			
 			local Content, Indent = Value[1], Value[2] or 0
 			Indent = math.clamp(Indent-1, 0, 9999)
 
-			--// Make line
+			
 			local Line = self:ApplyVariables(Content, Variables, Indent)
 			local IndentString = self:MakeIndent(Indent)
 
-			--// Append to code
+			
 			Out ..= `{IndentString}{Line}\n`
 		end
 
@@ -3455,23 +3443,23 @@ function Generation:MakeCallCode(ScriptType: string, Data: ScriptData): string
 end
 
 function Generation:RemoteScript(Module, Data: RemoteData, ScriptType: string): string
-	--// Unpack data
+	
 	local Remote = Data.Remote
 	local Args = Data.Args
 	local Method = Data.Method
 	local MetaMethod = Data.MetaMethod
 
-	--// Remote info
+	
 	local ClassName = Hook:Index(Remote, "ClassName")
 	local IsNilParent = Hook:Index(Remote, "Parent") == nil
 	
 	local Variables = Module.Variables
 	local Formatter = Module.Formatter
 	
-	--// Pre-render variables
+	
 	Variables:PrerenderVariables(Args, {"Instance"})
 
-	--// Create remote variable
+	
 	local RemoteVariable = Variables:MakeVariable({
 		Value = Formatter:Format(Remote, {
 			NoVariables = true
@@ -3482,7 +3470,7 @@ function Generation:RemoteScript(Module, Data: RemoteData, ScriptType: string): 
 		Class = "Remote"
 	})
 
-	--// Generate call script
+	
 	local CallCode = self:MakeCallCode(ScriptType, {
 		Variables = {
 			["RemoteCall"] = function(Indent: number)
@@ -3499,7 +3487,7 @@ function Generation:RemoteScript(Module, Data: RemoteData, ScriptType: string): 
 		MetaMethod = MetaMethod
 	})
 	
-	--// Make code
+	
 	local Code = self:GetBase(Module)
 	return `{Code}\n{CallCode}`
 end
@@ -3512,10 +3500,10 @@ function Generation:ConnectionsTable(Signal: RBXScriptSignal): table
 		local Function = Connection.Function
 		local Script = rawget(getfenv(Function), "script")
 
-		--// Skip if self
+		
 		if Script == ThisScript then continue end
 
-		--// Connection data
+		
 		local Data = {
 			Function = Function,
 			State = Connection.State,
@@ -3529,15 +3517,15 @@ function Generation:ConnectionsTable(Signal: RBXScriptSignal): table
 end
 
 function Generation:TableScript(Module, Table: table): string
-	--// Pre-render variables
+	
 	Module.Variables:PrerenderVariables(Table, {"Instance"})
 
-	--// Parse arguments
+	
 	local ParsedTable = Module.Parser:ParseTableIntoString({
 		Table = Table
 	})
 
-	--// Generate script
+	
 	local Code, NoVariables = self:GetBase(Module)
 	local Seperator = NoVariables and "" or "\n"
 	Code ..= `{Seperator}return {ParsedTable}`
@@ -3566,7 +3554,7 @@ function Generation:ConnectionInfo(Remote: Instance, ClassData: table): table?
 
 	local Connections = {}
 	for _, Method: string in next, ReceiveMethods do
-		pcall(function() -- TODO: GETCALLBACKVALUE
+		pcall(function() 
 			local Signal = Hook:Index(Remote, Method)
 			Connections[Method] = self:ConnectionsTable(Signal)
 		end)
@@ -3623,7 +3611,7 @@ function Generation:DumpLogs(Logs: table): string
 		Calls = {}
 	}
 
-	--// Create new parser instance
+	
 	local Module = Generation:NewParser()
 
 	for _, Data in Logs do
@@ -3637,19 +3625,19 @@ function Generation:DumpLogs(Logs: table): string
 			CallingScript = Data.CallingScript,
 		}
 
-		--// Append
+		
 		table.insert(Calls, Table)
 
-		--// Set BaseData
+		
 		if not BaseData then
 			BaseData = Data
 		end
 	end
 
-	--// Basedata merge
+	
 	Parsed.Remote = BaseData.Remote
 
-	--// Compile and save
+	
 	local Output = self:TableScript(Module, Parsed)
 	local FilePath = self:WriteDump(Output)
 	
@@ -3664,7 +3652,7 @@ type table = {
     [any]: any
 }
 
---// Module
+
 local Module = {
     CommCallbacks = {}
 }
@@ -3672,14 +3660,14 @@ local Module = {
 local CommWrapper = {}
 CommWrapper.__index = CommWrapper
 
---// Serializer cache
+
 local SerializeCache = setmetatable({}, {__mode = "k"})
 local DeserializeCache = setmetatable({}, {__mode = "k"})
 
---// Services
+
 local CoreGui
 
---// Modules
+
 local Hook
 local Channel
 local Config
@@ -3731,7 +3719,7 @@ function Module:NewCommWrap(Channel: BindableEvent)
         Event = Channel.Event
     }
 
-    --// Create new wrapper class
+    
     local Wrapped = setmetatable(Base, CommWrapper)
     Wrapped:BeginQueueService()
 
@@ -3739,7 +3727,7 @@ function Module:NewCommWrap(Channel: BindableEvent)
 end
 
 function Module:MakeDebugIdHandler(): BindableFunction
-    --// Using BindableFunction as it does not require a thread permission change
+    
     local Remote = Instance.new("BindableFunction")
     function Remote.OnInvoke(Object: Instance): string
         return Object:GetDebugId()
@@ -3758,13 +3746,13 @@ function Module:GetDebugId(Object: Instance): string
 end
 
 function Module:GetHiddenParent(): Instance
-    --// Use gethui if it exists
+    
     if gethui then return gethui() end
     return CoreGui
 end
 
 function Module:CreateCommChannel(): (number, BindableEvent)
-    --// Use native if it exists
+    
     local Force = Config and Config.ForceUseCustomComm or false
     if create_comm_channel and not Force then
         return create_comm_channel()
@@ -3773,7 +3761,7 @@ function Module:CreateCommChannel(): (number, BindableEvent)
     local Parent = self:GetHiddenParent()
     local ChannelId = math.random(1, 10000000)
 
-    --// BindableEvent
+    
     local Channel = Instance.new("BindableEvent", Parent)
     Channel.Name = ChannelId
 
@@ -3781,7 +3769,7 @@ function Module:CreateCommChannel(): (number, BindableEvent)
 end
 
 function Module:GetCommChannel(ChannelId: number): BindableEvent?
-    --// Use native if it exists
+    
     local Force = Config and Config.ForceUseCustomComm or false
     if get_comm_channel and not Force then
         local Channel = get_comm_channel(ChannelId)
@@ -3791,23 +3779,23 @@ function Module:GetCommChannel(ChannelId: number): BindableEvent?
     local Parent = self:GetHiddenParent()
     local Channel = Parent:FindFirstChild(ChannelId)
 
-    --// Wrap the channel (Prevents thread permission errors)
+    
     local Wrapped = self:NewCommWrap(Channel)
     return Wrapped, true
 end
 
 function Module:CheckValue(Value, Inbound: boolean?)
-     --// No serializing  needed
+     
     if typeof(Value) ~= "table" then 
         return Value 
     end
    
-    --// Deserialize
+    
     if Inbound then
         return self:DeserializeTable(Value)
     end
 
-    --// Serialize
+    
     return self:SerializeTable(Value)
 end
 
@@ -3815,7 +3803,7 @@ local Tick = 0
 function Module:WaitCheck()
     Tick += 1
     if Tick > 40 then
-        Tick = 0 -- I could use modulus here but the interger will be massive
+        Tick = 0 
         wait()
     end
 end
@@ -3839,7 +3827,7 @@ function Module:ReadPacket(Packet: table): (any, any)
 end
 
 function Module:SerializeTable(Table: table): table
-    --// Check cache for existing
+    
     local Cached = SerializeCache[Table]
     if Cached then return Cached end
 
@@ -3855,7 +3843,7 @@ function Module:SerializeTable(Table: table): table
 end
 
 function Module:DeserializeTable(Serialized: table): table
-    --// Check for cached
+    
     local Cached = DeserializeCache[Serialized]
     if Cached then return Cached end
 
@@ -3904,7 +3892,7 @@ function Module:ChannelIndex(Channel, Property: string)
         return Hook:Index(Channel, Property)
     end
 
-    --// Some executors return a UserData type
+    
     return Channel[Property]
 end
 
@@ -3935,7 +3923,7 @@ end
 function Module:CreateChannel(): number
     local ChannelID, Event = self:CreateCommChannel()
 
-    --// Connect GetCommCallback function
+    
     Event.Event:Connect(function(Type: string, ...)
         local Callback = self:GetCommCallback(Type)
         if Callback then
@@ -5345,7 +5333,7 @@ PreHighlight = function(G)
                 O(H, '"', 1, true)
                 O(H, "'", 2, true)
                 O(H, '%[(=*)%[', 3)
-                O(H, '--', 4, true)
+                O(H, '
                 table.sort(J)
                 local P, Q, R, S, T = G.NewLines, 0, 0, 0, {}
                 for U = 1, # J do
@@ -12210,7 +12198,9 @@ function p:AddDefaultTitleButtons()
     UIListLayout.Parent = MacContainer
     
     local function CreateCircle(Color, Order)
-        local btn = Instance.new("Frame")
+        local btn = Instance.new("TextButton")
+        btn.Text = ""
+        btn.AutoButtonColor = false
         btn.Size = UDim2.new(0, 12, 0, 12)
         btn.BackgroundColor3 = Color
         btn.LayoutOrder = Order
@@ -12229,6 +12219,9 @@ function p:AddDefaultTitleButtons()
     end
 
     local CloseBtn = CreateCircle(Color3.fromRGB(255, 95, 86), 1)
+    CloseBtn.Activated:Connect(function()
+        pcall(function() self:Close() end)
+    end)
     local MinBtn = CreateCircle(Color3.fromRGB(255, 189, 46), 2)
     local MaxBtn = CreateCircle(Color3.fromRGB(39, 201, 63), 3)
 
