@@ -4355,12 +4355,26 @@ function aa:Error(...)
     local g = aa:Concat({
         ...
     }, ' ')
+    
+    if writefile and makefolder and isfolder then
+        pcall(function()
+            if not isfolder("RemoteSpy_Errors") then
+                makefolder("RemoteSpy_Errors")
+            end
+            local timeStr = os.date("%Y%m%d_%H%M%S")
+            local fileName = "RemoteSpy_Errors/" .. timeStr .. "_ReGui_error.txt"
+            local errorText = "Time: " .. tostring(os.date()) .. "\n"
+                .. "ReGui Error:\n" .. tostring(g) .. "\n"
+                .. "StackTrace:\n" .. debug.traceback()
+            writefile(fileName, errorText)
+        end)
+    end
+
     local h = "1117925265"
     coroutine.wrap(error)(h)
 end
 function aa:IsDoubleClick(g)
-    local h = self.
-DoubleClickThreshold
+    local h = self.DoubleClickThreshold
     return g < h
 end
 function aa:StyleContainers()
@@ -8223,12 +8237,14 @@ function p:AddDefaultTitleButtons()
     
     local MacContainer = Instance.new("Frame")
     MacContainer.BackgroundTransparency = 1
-    MacContainer.Size = UDim2.new(0, 54, 1, 0)
+    MacContainer.Size = UDim2.new(0, 0, 1, 0)
+    MacContainer.AutomaticSize = Enum.AutomaticSize.X
     MacContainer.LayoutOrder = 1
     MacContainer.Parent = t.RawObject
 
     local UIPadding = Instance.new("UIPadding")
     UIPadding.PaddingLeft = UDim.new(0, 10)
+    UIPadding.PaddingRight = UDim.new(0, 10)
     UIPadding.Parent = MacContainer
 
     local UIListLayout = Instance.new("UIListLayout")
@@ -8291,7 +8307,10 @@ function p:AddDefaultTitleButtons()
     })
     self.Toggle = setmetatable({ Icon = Instance.new("ImageLabel") }, {
         __newindex = function(t, k, v)
-            if k == "Visible" then MinBtn.Visible = v end
+            if k == "Visible" then 
+                MinBtn.Visible = v 
+                MaxBtn.Visible = v
+            end
             rawset(t, k, v)
         end
     })
