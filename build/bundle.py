@@ -21,7 +21,13 @@ MAIN = "src/Main.lua"
 FRAME = "build/frame.lua"
 INFO_MODULE = "src/lib/Info.lua"
 INLINED = ("Info", "Files")
-LIBRARIES = ("Info", "Process", "Hook", "Flags", "Ui", "Generation", "Communication", "ReGui", "Parser")
+LIBRARIES = (
+    "Info", "Process", "Hook", "Flags", "Ui", "Generation", "Communication"
+)
+CUSTOM_LIBS = {
+    "ReGui": "Gui/gui.lua",
+    "Parser": "parser/parser.lua"
+}
 
 INSERT_PLACEHOLDER = "--INSERT: @lib/{name}.lua"
 COMPILE_PLACEHOLDER = '{{"base64", "COMPILE: @lib/{name}.lua"}}'
@@ -167,6 +173,14 @@ def build() -> str:
 
     for name in LIBRARIES:
         path = f"src/lib/{name}.lua"
+        main = replace_once(
+            main,
+            COMPILE_PLACEHOLDER.format(name=name),
+            long_string(read_source(path), path),
+            f"{name}.lua compile placeholder",
+        )
+
+    for name, path in CUSTOM_LIBS.items():
         main = replace_once(
             main,
             COMPILE_PLACEHOLDER.format(name=name),
