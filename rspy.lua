@@ -1890,7 +1890,7 @@ function Ui:LoadReGui()
 	end
 	ThemeConfig.TextFont = TextFont
 
-	
+
 	if not ReGui.Initialised then
 		local PrefabsId = ReGui.PrefabsId
 		assert(typeof(PrefabsId) == "number" and PrefabsId > 0, "ReGui returned an invalid PrefabsId")
