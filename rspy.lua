@@ -4678,7 +4678,7 @@ local F=p:Column()F:Label{Text=E}continue end local F=p:NextColumn()F:Label{Text
 'rbxassetid://4728059490',Laptop='rbxassetid://4728059725',Server=
 'rbxassetid://9692125126',Wedge='rbxassetid://9086583059',Drill=
 'rbxassetid://11959189471',Character='rbxassetid://13285102351'}end function a.g
-()return{Light=Color3.fromRGB(50,150,250),Dark=Color3.fromRGB(30,66,115),
+()return{Light=Color3.fromRGB(255,95,86),Dark=Color3.fromRGB(30,30,30),
 ExtraDark=Color3.fromRGB(28,39,53),White=Color3.fromRGB(240,240,240),Gray=Color3
 .fromRGB(172,171,175),Black=Color3.fromRGB(15,19,24),Yellow=Color3.fromRGB(230,
 180,0),Orange=Color3.fromRGB(230,150,0),Green=Color3.fromRGB(130,188,91),Red=
@@ -5562,15 +5562,18 @@ true,Open=true,Focused=false}function p:Tween(q)aa:CheckConfig(q,{Tweeninfo=self
 )local r,s=self.TagsList,self.Theme aa:MultiUpdateColors{Theme=s,TagsList=r,
 Objects=q}end function p:MakeTitleBarCanvas()local q=self.TitleBar local r=aa:
 MakeCanvas{WindowClass=self,Element=q}self.TitleBarCanvas=r return r end
-function p:AddDefaultTitleButtons()local q=self.TileBarConfig local r,s,t=q.
-Collapse,q.Close,self.TitleBarCanvas if not t then t=self:MakeTitleBarCanvas()
-end aa:CheckConfig(self,{Toggle=t:RadioButton{Icon=r.Image,IconPadding=r.
-IconPadding,LayoutOrder=1,Ratio=1,Size=UDim2.new(0,0),Callback=function()self:
-ToggleCollapsed()end},CloseButton=t:RadioButton{Icon=s.Image,IconPadding=s.
-IconPadding,LayoutOrder=3,Ratio=1,Size=UDim2.new(0,0),Callback=function()self:
-SetVisible(false)end},TitleLabel=t:Label{ColorTag='Title',LayoutOrder=2,Size=
-UDim2.new(1,0),Active=false,Fill=true,ClipsDescendants=true,AutomaticSize=Enum.
-AutomaticSize.XY}})self:TagElements{[self.TitleLabel]='WindowTitle'}end function
+function p:AddDefaultTitleButtons()local t=self.TitleBarCanvas if not t then t=self:MakeTitleBarCanvas()end
+local function CC(c,txt,o,tc)local b=Instance.new("TextButton")b.Text=txt b.TextColor3=tc or Color3.new(0,0,0)b.Font=Enum.Font.Code b.TextSize=12 b.AutoButtonColor=false b.Size=UDim2.new(0,12,0,12)b.BackgroundColor3=c b.LayoutOrder=o local cr=Instance.new("UICorner")cr.CornerRadius=UDim.new(1,0)cr.Parent=b return b end
+local mc=Instance.new("Frame")mc.BackgroundTransparency=1 mc.AutomaticSize=Enum.AutomaticSize.XY mc.LayoutOrder=1 mc.Parent=t.RawObject
+local mp=Instance.new("UIPadding")mp.PaddingLeft=UDim.new(0,10)mp.PaddingRight=UDim.new(0,10)mp.PaddingTop=UDim.new(0,6)mp.Parent=mc
+local ml=Instance.new("UIListLayout")ml.FillDirection=Enum.FillDirection.Horizontal ml.VerticalAlignment=Enum.VerticalAlignment.Center ml.Padding=UDim.new(0,6)ml.Parent=mc
+local b1=CC(Color3.fromRGB(255,95,86),"-",1)b1.Activated:Connect(function()pcall(function()self:ToggleCollapsed()end)end)b1.Parent=mc
+local b2=CC(Color3.fromRGB(255,189,46),"",2)b2.Parent=mc
+local b3=CC(Color3.fromRGB(39,201,63),"",3)b3.Parent=mc
+local rc=Instance.new("Frame")rc.BackgroundTransparency=1 rc.AutomaticSize=Enum.AutomaticSize.XY rc.LayoutOrder=3 rc.Parent=t.RawObject
+local rp=Instance.new("UIPadding")rp.PaddingRight=UDim.new(0,10)rp.PaddingTop=UDim.new(0,6)rp.Parent=rc
+local b4=CC(Color3.fromRGB(0,0,0),"X",1,Color3.new(1,1,1))b4.Activated:Connect(function()pcall(function()self:Close()end)end)b4.Parent=rc
+aa:CheckConfig(self,{Toggle=mc,CloseButton=rc,TitleLabel=t:Label{ColorTag='Title',LayoutOrder=2,Size=UDim2.new(1,0),Active=false,Fill=true,ClipsDescendants=true,AutomaticSize=Enum.AutomaticSize.XY}})self:TagElements{[self.TitleLabel]='WindowTitle'}end function
 p:Close()local q=self.CloseCallback if q then local r=q(self)if r==false then
 return end end self:Remove()end function p:SetVisible(q)local r,s=self.
 WindowFrame,self.NoFocusOnAppearing self.Visible=q r.Visible=q if q and not s
@@ -5704,7 +5707,6 @@ NoButtons=true})m('InputInt4','InputInt',4,{NoButtons=true})m('SliderInt2',
 'DragFloat4','DragFloat',4)n('InputColor3','InputInt3')n('SliderColor3',
 'SliderInt3')n('DragColor3','DragInt3')o('InputCFrame','InputInt3')o(
 'SliderCFrame','SliderInt3')o('DragCFrame','DragInt3')return aa
-
 ]==],
 	Parser = [==[
 --[[
