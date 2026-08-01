@@ -12297,31 +12297,31 @@ function p:AddDefaultTitleButtons()
     
     local toggleIcon = nil
     if self.Toggle then
-        if typeof(self.Toggle) == "Instance" then
-            toggleIcon = self.Toggle:FindFirstChild("Icon")
-        elseif type(self.Toggle) == "table" and self.Toggle.RawObject then
-            toggleIcon = self.Toggle.RawObject:FindFirstChild("Icon")
-        end
+        local success, raw = pcall(function() return self.Toggle.RawObject end)
+        local target = (success and raw) and raw or self.Toggle
+        pcall(function()
+            local icon = target:FindFirstChild("Icon")
+            if icon then toggleIcon = icon end
+        end)
     end
 
     if toggleIcon then
-        toggleIcon.Rotation = 90
+        pcall(function() toggleIcon.Rotation = 90 end)
     end
     
     local closeBtnObj = nil
     if self.CloseButton then
-        if typeof(self.CloseButton) == "Instance" then
-            closeBtnObj = self.CloseButton
-        elseif type(self.CloseButton) == "table" and self.CloseButton.RawObject then
-            closeBtnObj = self.CloseButton.RawObject
-        end
+        local success, raw = pcall(function() return self.CloseButton.RawObject end)
+        closeBtnObj = (success and raw) and raw or self.CloseButton
     end
 
     if closeBtnObj then
-        closeBtnObj:GetPropertyChangedSignal("Visible"):Connect(function()
+        pcall(function()
+            closeBtnObj:GetPropertyChangedSignal("Visible"):Connect(function()
+                MacContainer.Visible = closeBtnObj.Visible
+            end)
             MacContainer.Visible = closeBtnObj.Visible
         end)
-        MacContainer.Visible = closeBtnObj.Visible
     end
 
     self:TagElements{
