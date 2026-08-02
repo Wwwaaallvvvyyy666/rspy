@@ -2125,11 +2125,13 @@ function Ui:ShowUnsupported(FuncName: string)
 	})
 end
 
-function Ui:CreateOptionsForDict(Parent, Dict: table, Callback)
+function Ui:CreateOptionsForDict(Parent, Dict, Callback)
 	local Options = {}
+	local OptionTypes = self.OptionTypes
 
-	
-	for Key, Value in next, Dict do
+	for Key, Value in Dict do
+		if not OptionTypes[typeof(Value)] then continue end
+		
 		Options[Key] = {
 			Value = Value,
 			Label = Key,
