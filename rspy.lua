@@ -1123,16 +1123,7 @@ function Process:ProcessRemote(Data: RemoteData, Remote, ...): table?
     })
 
     
-    local Success, ReturnValues = pcall(ProcessCallback, Data, Remote, ...)
-    
-    if not Success then
-        Data.ReturnValues = { "Crash prevented: " .. tostring(ReturnValues) }
-        Communication:QueueLog(Data)
-        if Data.OriginalFunc then
-            return pcall(Data.OriginalFunc, Remote, ...)
-        end
-        return nil
-    end
+    local ReturnValues = ProcessCallback(Data, Remote, ...)
 
     Data.ReturnValues = ReturnValues
 
@@ -3109,11 +3100,15 @@ end
 function Ui:ProcessLogQueue()
 	local Queue = self.LogQueue
     if #Queue <= 0 then return end
+    
+    local CurrentQueue = {}
+    for i, v in ipairs(Queue) do
+        table.insert(CurrentQueue, v)
+    end
+    table.clear(Queue)
 
-	
-    for Index, Data in next, Queue do
+    for _, Data in ipairs(CurrentQueue) do
         self:CreateLog(Data)
-        table.remove(Queue, Index)
     end
 end
 

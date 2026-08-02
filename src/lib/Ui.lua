@@ -1348,11 +1348,15 @@ end
 function Ui:ProcessLogQueue()
 	local Queue = self.LogQueue
     if #Queue <= 0 then return end
+    
+    local CurrentQueue = {}
+    for i, v in ipairs(Queue) do
+        table.insert(CurrentQueue, v)
+    end
+    table.clear(Queue)
 
-	
-    for Index, Data in next, Queue do
+    for _, Data in ipairs(CurrentQueue) do
         self:CreateLog(Data)
-        table.remove(Queue, Index)
     end
 end
 

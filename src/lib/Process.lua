@@ -608,16 +608,7 @@ function Process:ProcessRemote(Data: RemoteData, Remote, ...): table?
     })
 
     
-    local Success, ReturnValues = pcall(ProcessCallback, Data, Remote, ...)
-    
-    if not Success then
-        Data.ReturnValues = { "Crash prevented: " .. tostring(ReturnValues) }
-        Communication:QueueLog(Data)
-        if Data.OriginalFunc then
-            return pcall(Data.OriginalFunc, Remote, ...)
-        end
-        return nil
-    end
+    local ReturnValues = ProcessCallback(Data, Remote, ...)
 
     Data.ReturnValues = ReturnValues
 
